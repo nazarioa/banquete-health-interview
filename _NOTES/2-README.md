@@ -42,3 +42,15 @@ I am getting hungry, so I am going to come back to the last 2 tables.
 0 - 1000 : liquid
 1001 - 1500 : bland
 1501 - 2000 : normal
+
+---
+
+I just got back from walking the dogs.
+
+My wife and I chatted about this some more. She was a doctor back in the old country and here she manages nurses.
+She has a lot of cool ideas about what and how meals should be made but I am having to focus her on calories (as a stand-in for other dietary restrictions).
+
+This is my quick check in. I am about to decide how I want to proceed in terms of user flow and API. I am going to try to stick to the schema as it is and only make changes if absolutely necessary. Any "extra" changes will be documented along with a reason
+but not implemented, most likely for future growth.
+
+Please sit tight
