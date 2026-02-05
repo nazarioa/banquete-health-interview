@@ -18,3 +18,10 @@ I see that there is also a docker file that I will explore shortly.
 
 back of my mind is the product stuff I mentioned above. 
 
+
+---
+Just got the database up and running and looking over the schema.
+
+I see that it has data. Looks like the FE is 100% open to me.
+
+I will eat some lunch think about a users workflow MVP and come back to this. I may write stuff down on paper/white board. I will try to document stuff in `systemDesign` directory.
