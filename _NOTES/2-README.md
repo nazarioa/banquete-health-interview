@@ -54,3 +54,12 @@ This is my quick check in. I am about to decide how I want to proceed in terms o
 but not implemented, most likely for future growth.
 
 Please sit tight
+
+---
+
+Questions regarding edge cases:
+- what happens if the patient checks in late in the day and is given lots of calories. Do we allow them to order more than allowed
+- what happens if the prescribed calories is decreased mid-day?
+- I am going to make it so that the patient_diet_orders are set on initial patient intake and only adjusted once a day. After speaking with my wife, these could be adjustable after every visit by a physician.
+
+---
