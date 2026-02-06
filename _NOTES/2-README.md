@@ -71,4 +71,18 @@ I am getting into the nitty-gritty of the automated aspect of placing the order.
 I see the "natural" relationship between "tray_orders" and "recipies" as a OneToMany...
 I am kind of whipped I may just look to write up the interface, then pipe this through Claude.
 
-TBH I just wnat to code
+TBH I just want to code...
+
+---
+
+**It is Friday, Feb 6**
+
+So... I just sat down. Today has been swamped with a bunch of stuff and i am just now sitting down.
+
+That does not mean I have not been thinking about the APIs and how this would work. Something I am not 100% sure about is how / if we should limit the user when placing their order or if we should allow them to use up all of their Calories in one go. Or maybe it will be a combination of limiting bot the number of meals and the Calories.
+
+For example, assume 2000 calories is what is prescribed.
+
+The Patient wants to order Breakfast. Should they be able to order 2000 calories worth of food? Should we divide the number of calories by number of meals left in the day?, Do we know that zero meals are than a threshold of calories?
+
+I think I am going to make it so that the user can only order one meal, I will let teh user exhaust their calorie count in one meal (should such a meal exist). And if they later want to order a meal and are over by even a bit they just wont be able to place the order.
