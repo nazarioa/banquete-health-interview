@@ -28,7 +28,7 @@ AutomatedApi focuses on calls that the system will do as reactions to events bas
 ```typescript
 /**
  * Returns the dailiy caloric limitations plus the remining allotoment. 
- * Reads patient_id from session context
+ * "patient_id" read from session context
  */
 function getDietOrder(): DietOrderResponse;
 type DietOrderResponse = {
@@ -41,7 +41,7 @@ type DietOrderResponse = {
 ```typescript
 /**
  * Returns a list of meals that conform to the "Patient"'s caloric onstraint for the given meal category
- * Reads patient_id from session context.
+ * "patient_id" read from session context.
  * @param category
  */
 function getAvailableMeals(category: 'breakfast' | 'lunch' | 'dinner' | 'snack' ): MealsResponse;
@@ -56,7 +56,7 @@ type MealsResponse = {
  * For a given category, returns a list of all meals schedualed plus or minus a week ordered by TrayOrder.schdualed_for.
  * If no category is given, all meals are listsed.
  * If showPast is set to true it includes past listings
- * Reads patient_id from session context.
+ * "patient_id" read from session context.
  */
 function getSchedualedTrays(category?: 'breakfast' | 'lunch' | 'dinner' | 'snack', showPast?: boolean): MealsResponse;
 
