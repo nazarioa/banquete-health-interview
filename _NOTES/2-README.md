@@ -93,3 +93,10 @@ LOLZ LOLZ -- I thought I had to do a front end backend :)
 jejeje. Seems like I just have to do the BE specific to teh automated system.
 
 See comments from earlier in teh day as this the most pertinent part me thinks.
+
+---
+
+I just finish running claude against my BACKEND.md readme.
+I also had it write test cases. I don't trust this thing one bit. I will test the test via contra test examples. I will do this when I get home as I am currently getting my car serviced... it has been a day!
+
+<img src="3-claude-dafaaa.png" alt="claude output">
