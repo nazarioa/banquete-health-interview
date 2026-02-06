@@ -86,3 +86,10 @@ For example, assume 2000 calories is what is prescribed.
 The Patient wants to order Breakfast. Should they be able to order 2000 calories worth of food? Should we divide the number of calories by number of meals left in the day?, Do we know that zero meals are than a threshold of calories?
 
 I think I am going to make it so that the user can only order one meal, I will let teh user exhaust their calorie count in one meal (should such a meal exist). And if they later want to order a meal and are over by even a bit they just wont be able to place the order.
+
+---
+
+LOLZ LOLZ -- I thought I had to do a front end backend :)
+jejeje. Seems like I just have to do the BE specific to teh automated system.
+
+See comments from earlier in teh day as this the most pertinent part me thinks.
