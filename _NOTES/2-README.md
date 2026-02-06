@@ -39,9 +39,11 @@ Ok I lied I looked at the schema just a bit
 
 I am getting hungry, so I am going to come back to the last 2 tables.
 
-0 - 1000 : liquid
-1001 - 1500 : bland
-1501 - 2000 : normal
+| Calories    | Type   |
+|-------------|--------|
+| 0 - 1000    | liquid |
+| 1001 - 1500 | bland  |
+| 1501 - 2000 | normal |
 
 ---
 
@@ -63,3 +65,10 @@ Questions regarding edge cases:
 - I am going to make it so that the patient_diet_orders are set on initial patient intake and only adjusted once a day. After speaking with my wife, these could be adjustable after every visit by a physician.
 
 ---
+
+I am getting into the nitty-gritty of the automated aspect of placing the order. I am not 100% sure why we need "tray_orders" and "tray_order_recipies".
+
+I see the "natural" relationship between "tray_orders" and "recipies" as a OneToMany...
+I am kind of whipped I may just look to write up the interface, then pipe this through Claude.
+
+TBH I just wnat to code
