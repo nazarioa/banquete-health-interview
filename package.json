@@ -12,7 +12,8 @@
     "reset-db": "ts-node scripts/restoreDbSnapshot.ts",
     "test": "jest --config test/jest.config.js",
     "start": "ts-node src/entrypoint.ts",
-    "server": "ts-node src/server/index.ts"
+    "server": "ts-node src/server/index.ts",
+    "type-check": "ts-node --typeCheck -- ./src/**/*.ts ./test/**/*.ts"
   },
   "keywords": [],
   "author": "",
