@@ -123,7 +123,7 @@ export const executePrep = async (
             try {
                 dietOrder = await getAdminDietOrder(patient.id);
             } catch (error) {
-                // TODO: Maybe we should have a default meal?
+                // TODO: Maybe we should have a default meal for a given DietOrder?
                 // Patient has no diet order, skip with warning
                 result.errors.push({
                     patientId: patient.id,
