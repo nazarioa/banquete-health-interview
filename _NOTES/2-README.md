@@ -110,3 +110,15 @@ Just arrived at the house. I am going to review the code...
 If I have time...
 1. I may even make changes to the schema
 2. generate FE code...
+
+---
+
+We had friends over, I am just now able to get my thoughts down. Earlier I noticed that Claude did not generate an actual 
+HTTP server with API calls which is not needed for the final submission as you are only asking for the automated portion,
+which makes it a bit harder to test the various pathways.
+
+So I followed Claude up with the following prompt 
+
+<img src="4.0-give-it-endpoints.png" alt="give it endpoints">
+<img src="4.1-give-it-endpoints.png" alt="give it endpoints">
+<img src="4.2-give-it-endpoints.png" alt="give it endpoints">

@@ -11,7 +11,8 @@
     "init-db": "npm run reset-db",
     "reset-db": "ts-node scripts/restoreDbSnapshot.ts",
     "test": "jest --config test/jest.config.js",
-    "start": "ts-node src/entrypoint.ts"
+    "start": "ts-node src/entrypoint.ts",
+    "server": "ts-node src/server/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +20,11 @@
   "devDependencies": {
     "@babel/preset-env": "^7.23.2",
     "@babel/preset-typescript": "^7.23.2",
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/express": "^5.0.6",
     "@types/jest": "^29.5.5",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/lodash": "^4.14.199",
     "@types/node": "^20.8.4",
     "csv-parse": "^5.5.2",
@@ -30,7 +35,11 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@prisma/client": "^5.4.2"
+    "@prisma/client": "^5.4.2",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3"
   },
   "prisma": {
     "seed": "ts-node prisma/seed/seed.ts"

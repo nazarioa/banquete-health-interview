@@ -76,3 +76,13 @@ model TrayOrderRecipe {
 
     @@map("tray_order_recipes")
 }
+
+model Admin {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String   // bcrypt hashed
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("admins")
+}
