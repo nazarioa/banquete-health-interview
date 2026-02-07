@@ -7,9 +7,9 @@ POST {{baseUrl}}/api/admin/auth/register
 Content-Type: application/json
 
 {
-    "email": "admin@example.com",
-    "name": "Test Admin",
-    "password": "secret123"
+    "email": "nazario.a@gmail.com",
+    "name": "Nazario A. Ayala",
+    "password": "BacK54TK!"
 }
 
 ### Login
@@ -17,8 +17,8 @@ POST {{baseUrl}}/api/admin/auth/login
 Content-Type: application/json
 
 {
-    "email": "admin@example.com",
-    "password": "secret123"
+    "email": "nazario.a@gmail.com",
+    "password": "BacK54TK!"
 }
 
 ###
