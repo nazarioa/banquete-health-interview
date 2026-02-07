@@ -122,3 +122,8 @@ So I followed Claude up with the following prompt
 <img src="4.0-give-it-endpoints.png" alt="give it endpoints">
 <img src="4.1-give-it-endpoints.png" alt="give it endpoints">
 <img src="4.2-give-it-endpoints.png" alt="give it endpoints">
+
+---
+
+I do not like the file structure.. I may spend a few minutes cleaning this up before I got to bed. I still have not tested
+the actual code paths.
