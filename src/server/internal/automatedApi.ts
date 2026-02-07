@@ -94,10 +94,10 @@ const getServeTime = (date: Date, mealTime: 'breakfast' | 'lunch' | 'dinner'): D
 export const executePrep = async (
     mealTime: 'breakfast' | 'lunch' | 'dinner'
 ): Promise<ExecutePrepResponse> => {
-    // TODO: this is almost correct... move this to triggerSmartOrderSystem
     const today = new Date();
     const serveTime = getServeTime(today, mealTime);
-    // TODO: END
+
+    // TODO: set systemwide status that "the meals are being prepped, and orders cannot be changed".
 
     const result: ExecutePrepResponse = {
         patientsProcessed: 0,
