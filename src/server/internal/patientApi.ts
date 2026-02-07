@@ -31,6 +31,7 @@ export const getDietOrder = async (patientId: string): Promise<DietOrderResponse
 
     return {
         minimum_calories: patientDietOrder.dietOrder.minimumCalories ?? 0,
+        // TODO: Is this a resonable upper bound?
         maximum_calories: patientDietOrder.dietOrder.maximumCalories ?? Infinity,
         calories_consumed: caloriesConsumed,
     };

@@ -11,6 +11,8 @@ describe('helpers', () => {
             expect(result.getMinutes()).toBe(1);
             expect(result.getSeconds()).toBe(0);
             expect(result.getDate()).toBe(15);
+            expect(result.getMonth()).toBe(0); // javascript months are zero index
+            expect(result.getFullYear()).toBe(2025);
         });
     });
 
@@ -23,11 +25,13 @@ describe('helpers', () => {
             expect(result.getMinutes()).toBe(59);
             expect(result.getSeconds()).toBe(59);
             expect(result.getDate()).toBe(15);
+            expect(result.getMonth()).toBe(0); // javascript months are zero index
+            expect(result.getFullYear()).toBe(2025);
         });
     });
 
     describe('getDateRangeForWeek', () => {
-        it('returns date range +/- 7 days from base date', () => {
+        it('returns date range +/- 7 days from base date (rolling week window)', () => {
             const baseDate = new Date('2025-01-15T12:00:00');
             const { start, end } = getDateRangeForWeek(baseDate);
 
@@ -36,6 +40,7 @@ describe('helpers', () => {
         });
     });
 
+    // DISAPPROVED - These tests are not being mocked.
     describe('calculateCaloriesConsumed', () => {
         // Use the seed data patient: Mark Corrigan
         const seedPatientId = '7ea4e6ec-f359-485b-ac99-e0b44c3e18b9';
