@@ -1,0 +1,8 @@
+### GET health
+GET http://localhost:3000/health
+
+### GET request to example server
+GET http://localhost:3000/api/patient/diet-order
+Cookie: patientId={{patientId}};
+
+###
