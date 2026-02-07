@@ -140,3 +140,12 @@ This morning I forced myself to read the email and what you are asking for in te
 At the end of the day I am look for a job and therefor I need to at least meet your bare minimum and specifically the auto ordering bit.
 
 So I am going to focus on doing the things you are asking for.
+
+---
+
+testing admin end-points:
+1. Create admin
+2. Login with admin
+3. Create Patient
+4. Associate Patient with DietOrders (PASS)
+<img src="/5-1.png" alt="flow tests: creating admin, authing admin, creating Patient, associating Patient with diet_orders">
