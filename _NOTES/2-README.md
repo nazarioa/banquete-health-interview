@@ -149,3 +149,9 @@ testing admin end-points:
 3. Create Patient
 4. Associate Patient with DietOrders (PASS)
 <img src="/5-1.png" alt="flow tests: creating admin, authing admin, creating Patient, associating Patient with diet_orders">
+
+---
+
+now that I have a patient with some restrictions. and now that breakfast and lunch has come and gone, I am going to play with the end-points that deal with creation of meals both automated and not
+
+---
