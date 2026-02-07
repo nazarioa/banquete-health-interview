@@ -1,0 +1,206 @@
+# =============================================================================
+# Authentication (public)
+# =============================================================================
+
+### Register new admin
+POST {{baseUrl}}/api/admin/auth/register
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "name": "Test Admin",
+    "password": "secret123"
+}
+
+### Login
+POST {{baseUrl}}/api/admin/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "secret123"
+}
+
+###
+
+# =============================================================================
+# Patients CRUD (requires Bearer token)
+# =============================================================================
+
+### Get all patients
+GET {{baseUrl}}/api/admin/patients
+Authorization: Bearer {{token}}
+
+### Get patient by ID
+GET {{baseUrl}}/api/admin/patients/7ea4e6ec-f359-485b-ac99-e0b44c3e18b9
+Authorization: Bearer {{token}}
+
+### Create patient
+POST {{baseUrl}}/api/admin/patients
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "New Patient"
+}
+
+### Update patient
+PUT {{baseUrl}}/api/admin/patients/<patient-id>
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Updated Name"
+}
+
+### Delete patient
+DELETE {{baseUrl}}/api/admin/patients/<patient-id>
+Authorization: Bearer {{token}}
+
+###
+
+# =============================================================================
+# Recipes CRUD
+# =============================================================================
+
+### Get all recipes
+GET {{baseUrl}}/api/admin/recipes
+Authorization: Bearer {{token}}
+
+### Get recipe by ID
+GET {{baseUrl}}/api/admin/recipes/ad3de666-05e4-416c-a7d4-a5c5cf79d6f4
+Authorization: Bearer {{token}}
+
+### Create recipe
+POST {{baseUrl}}/api/admin/recipes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Grilled Chicken",
+    "category": "Entrees",
+    "calories": 350
+}
+
+### Update recipe
+PUT {{baseUrl}}/api/admin/recipes/<recipe-id>
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Grilled Chicken Breast",
+    "calories": 320
+}
+
+### Delete recipe
+DELETE {{baseUrl}}/api/admin/recipes/<recipe-id>
+Authorization: Bearer {{token}}
+
+###
+
+# =============================================================================
+# Diet Orders CRUD
+# =============================================================================
+
+### Get all diet orders
+GET {{baseUrl}}/api/admin/diet-orders
+Authorization: Bearer {{token}}
+
+### Get diet order by ID
+GET {{baseUrl}}/api/admin/diet-orders/<diet-order-id>
+Authorization: Bearer {{token}}
+
+### Create diet order
+POST {{baseUrl}}/api/admin/diet-orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Low Sodium",
+    "minimumCalories": 1200,
+    "maximumCalories": 1800
+}
+
+### Update diet order
+PUT {{baseUrl}}/api/admin/diet-orders/<diet-order-id>
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Low Sodium Diet",
+    "maximumCalories": 2000
+}
+
+### Delete diet order
+DELETE {{baseUrl}}/api/admin/diet-orders/<diet-order-id>
+Authorization: Bearer {{token}}
+
+###
+
+# =============================================================================
+# Patient Diet Orders CRUD
+# =============================================================================
+
+### Get patient diet order by ID
+GET {{baseUrl}}/api/admin/patient-diet-orders/<id>
+Authorization: Bearer {{token}}
+
+### Get patient diet order by patient ID
+GET {{baseUrl}}/api/admin/patient-diet-orders/by-patient/7ea4e6ec-f359-485b-ac99-e0b44c3e18b9
+Authorization: Bearer {{token}}
+
+### Create patient diet order (assign diet to patient)
+POST {{baseUrl}}/api/admin/patient-diet-orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "patientId": "<patient-id>",
+    "dietOrderId": "<diet-order-id>"
+}
+
+### Delete patient diet order
+DELETE {{baseUrl}}/api/admin/patient-diet-orders/<id>
+Authorization: Bearer {{token}}
+
+###
+
+# =============================================================================
+# Tray Orders CRUD
+# =============================================================================
+
+### Get all tray orders
+GET {{baseUrl}}/api/admin/tray-orders
+Authorization: Bearer {{token}}
+
+### Get tray order by ID
+GET {{baseUrl}}/api/admin/tray-orders/<tray-order-id>
+Authorization: Bearer {{token}}
+
+### Create tray order
+POST {{baseUrl}}/api/admin/tray-orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "patientId": "7ea4e6ec-f359-485b-ac99-e0b44c3e18b9",
+    "scheduledFor": "2026-02-08T12:00:00.000Z",
+    "mealTime": "lunch",
+    "recipeIds": ["ad3de666-05e4-416c-a7d4-a5c5cf79d6f4", "15c8ac77-128e-4825-960e-eb5638376e00"]
+}
+
+### Update tray order
+PUT {{baseUrl}}/api/admin/tray-orders/<tray-order-id>
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "mealTime": "dinner",
+    "scheduledFor": "2026-02-08T18:00:00.000Z"
+}
+
+### Delete tray order
+DELETE {{baseUrl}}/api/admin/tray-orders/<tray-order-id>
+Authorization: Bearer {{token}}
+
+###
