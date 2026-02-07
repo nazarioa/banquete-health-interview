@@ -1,5 +1,6 @@
 import { db } from '../db';
 
+// TODO: Maybe replace this with date-fns..
 /**
  * Returns the start of day (12:01 AM) for a given date
  */
@@ -9,6 +10,7 @@ export const getStartOfDay = (date: Date): Date => {
     return start;
 };
 
+// TODO: Maybe replace this with date-fns..
 /**
  * Returns the end of day (11:59:59 PM) for a given date
  */
@@ -18,6 +20,7 @@ export const getEndOfDay = (date: Date): Date => {
     return end;
 };
 
+// TODO: Maybe replace this with date-fns..
 /**
  * Returns date range for +/- 1 week from base date
  */
@@ -46,6 +49,7 @@ export const calculateCaloriesConsumed = async (patientId: string, date: Date): 
     const startOfDay = getStartOfDay(date);
     const now = new Date();
 
+    // TODO: Nazario, validate this statement...
     // Use the earlier of: current time or end of day
     // This ensures we only count meals that have been "served" (scheduled time has passed)
     const endTime = now < getEndOfDay(date) ? now : getEndOfDay(date);
@@ -63,6 +67,7 @@ export const calculateCaloriesConsumed = async (patientId: string, date: Date): 
                 lte: endTime,
             },
         },
+        // TODO: what does this do?
         include: {
             recipes: {
                 include: {

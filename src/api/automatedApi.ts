@@ -22,6 +22,7 @@ export const getAdminDietOrder = async (patientId: string): Promise<DietOrderRes
  * Returns recipes that fit within the patient's remaining calorie budget.
  * Same as patientApi.getAvailableMeals but with explicit patient_id parameter.
  */
+// TODO: I think this is not actually getting meals by calorie budget
 export const getAvailableMeals = async (
     patientId: string,
     mealTime: MealTimeInput
@@ -93,8 +94,10 @@ const getServeTime = (date: Date, mealTime: 'breakfast' | 'lunch' | 'dinner'): D
 export const executePrep = async (
     mealTime: 'breakfast' | 'lunch' | 'dinner'
 ): Promise<ExecutePrepResponse> => {
+    // TODO: this is almost correct... move this to triggerSmartOrderSystem
     const today = new Date();
     const serveTime = getServeTime(today, mealTime);
+    // TODO: END
 
     const result: ExecutePrepResponse = {
         patientsProcessed: 0,
@@ -120,6 +123,7 @@ export const executePrep = async (
             try {
                 dietOrder = await getAdminDietOrder(patient.id);
             } catch (error) {
+                // TODO: Maybe we should have a default meal?
                 // Patient has no diet order, skip with warning
                 result.errors.push({
                     patientId: patient.id,

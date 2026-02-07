@@ -42,6 +42,7 @@ export const updatePatient = async (input: UpdatePatientInput): Promise<Patient>
 
 export const deletePatient = async (id: string): Promise<void> => {
     // Delete in order to respect foreign key constraints
+    // TODO: I think this can be done better using cascade delet rules in the database...
     await db.$transaction(async (tx) => {
         // First, delete tray order recipes for this patient's orders
         const trayOrders = await tx.trayOrder.findMany({
