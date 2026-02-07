@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authenticatePatient } from '../middleware/auth';
-import * as PatientApi from '../../api/patientApi';
-import { MealTimeInput } from '../../api/types';
+import * as PatientApi from '../internal/patientApi';
+import { MealTimeInput } from '../internal/types';
 
 const router = Router();
 

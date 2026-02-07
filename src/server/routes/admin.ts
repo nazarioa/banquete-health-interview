@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { db } from '../../db';
 import { authenticateAdmin, hashPassword, comparePassword, generateToken } from '../middleware/auth';
-import * as AdminApi from '../../api/adminApi';
-import { MealTimeInput } from '../../api/types';
+import * as AdminApi from '../internal/adminApi';
+import { MealTimeInput } from '../internal/types';
 
 const router = Router();
 

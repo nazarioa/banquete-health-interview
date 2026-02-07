@@ -1,4 +1,4 @@
-import { db } from '../db';
+import { db } from '../../db';
 import { getStartOfDay, getEndOfDay } from './helpers';
 import { getDietOrder, getAvailableMeals as patientGetAvailableMeals } from './patientApi';
 import {

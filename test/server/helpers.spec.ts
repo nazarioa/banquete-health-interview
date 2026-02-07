@@ -1,5 +1,5 @@
 import { db } from '../../src/db';
-import { calculateCaloriesConsumed, getStartOfDay, getEndOfDay, getDateRangeForWeek } from '../../src/api/helpers';
+import { calculateCaloriesConsumed, getStartOfDay, getEndOfDay, getDateRangeForWeek } from '../../src/server/internal/helpers';
 
 describe('helpers', () => {
     describe('getStartOfDay', () => {

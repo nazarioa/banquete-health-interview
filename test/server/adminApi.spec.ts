@@ -24,7 +24,7 @@ import {
     getAllTrayOrders,
     updateTrayOrder,
     deleteTrayOrder,
-} from '../../src/api/adminApi';
+} from '../../src/server/internal/adminApi';
 
 describe('AdminApi', () => {
     describe('Patient CRUD', () => {

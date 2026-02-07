@@ -5,7 +5,7 @@ import {
     getTrayOrders,
     postTrayOrders,
     deleteTrayOrders,
-} from '../../src/api/patientApi';
+} from '../../src/server/internal/patientApi';
 
 describe('PatientApi', () => {
     // Helper to create a patient with diet order

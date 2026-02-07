@@ -1,5 +1,5 @@
 import { Patient, Recipe, DietOrder, PatientDietOrder, TrayOrder } from '@prisma/client';
-import { db } from '../db';
+import { db } from '../../db';
 import {
     CreatePatientInput,
     UpdatePatientInput,

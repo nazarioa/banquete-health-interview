@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authenticateAdmin } from '../middleware/auth';
-import * as AutomatedApi from '../../api/automatedApi';
-import { MealTimeInput } from '../../api/types';
+import * as AutomatedApi from '../internal/automatedApi';
+import { MealTimeInput } from '../internal/types';
 
 const router = Router();
 

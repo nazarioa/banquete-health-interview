@@ -1,4 +1,4 @@
-import { db } from '../db';
+import { db } from '../../db';
 
 // TODO: Maybe replace this with date-fns..
 /**

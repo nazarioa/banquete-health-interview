@@ -3,8 +3,8 @@ import {
     getAdminDietOrder,
     getAvailableMeals,
     executePrep,
-} from '../../src/api/automatedApi';
-import { getDietOrder } from '../../src/api/patientApi';
+} from '../../src/server/internal/automatedApi';
+import { getDietOrder } from '../../src/server/internal/patientApi';
 
 describe('AutomatedApi', () => {
     // Helper to create a patient with diet order

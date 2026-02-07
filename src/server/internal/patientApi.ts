@@ -1,4 +1,4 @@
-import { db } from '../db';
+import { db } from '../../db';
 import { calculateCaloriesConsumed, getDateRangeForWeek } from './helpers';
 import {
     DietOrderResponse,
