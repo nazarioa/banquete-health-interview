@@ -125,5 +125,18 @@ So I followed Claude up with the following prompt
 
 ---
 
-I do not like the file structure.. I may spend a few minutes cleaning this up before I got to bed. I still have not tested
-the actual code paths.
+I do not like the file structure.. I may spend a few minutes cleaning this up before I got to bed. I still have not tested the actual code paths.
+
+---
+
+Welp holly smokes. I barely slept last night. I've used Cursor and this is the first time I have used paid Claude and I feel like I am driving a spaceship.
+
+I am having fun thinking of al kinds of things I can do. Specifically I was thinking about the user flow from the perspective of a Patient and Provider.
+
+How the Patient/Provider would auth and setup a new Patient.
+
+This morning I forced myself to read the email and what you are asking for in terms of requirements...
+
+At the end of the day I am look for a job and therefor I need to at least meet your bare minimum and specifically the auto ordering bit.
+
+So I am going to focus on doing the things you are asking for.
