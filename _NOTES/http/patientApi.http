@@ -1,8 +1,58 @@
-### GET health
-GET http://localhost:3000/health
+@patientId = 7ea4e6ec-f359-485b-ac99-e0b44c3e18b9
 
-### GET request to example server
-GET http://localhost:3000/api/patient/diet-order
-Cookie: patientId={{patientId}};
+### GET health
+GET {{baseUrl}}/health
+
+### GET diet order
+GET {{baseUrl}}/api/patient/diet-order
+Cookie: patientId={{patientId}}
+
+### GET available meals for breakfast
+GET {{baseUrl}}/api/patient/available-meals/breakfast
+Cookie: patientId={{patientId}}
+
+### GET available meals for lunch
+GET {{baseUrl}}/api/patient/available-meals/lunch
+Cookie: patientId={{patientId}}
+
+### GET available meals for dinner
+GET {{baseUrl}}/api/patient/available-meals/dinner
+Cookie: patientId={{patientId}}
+
+### GET tray orders (all)
+GET {{baseUrl}}/api/patient/tray-orders
+Cookie: patientId={{patientId}}
+
+### GET tray orders (future only)
+GET {{baseUrl}}/api/patient/tray-orders?showPast=false
+Cookie: patientId={{patientId}}
+
+### GET tray orders (filtered by mealTime)
+GET {{baseUrl}}/api/patient/tray-orders?mealTime=lunch
+Cookie: patientId={{patientId}}
+
+### POST create tray order
+POST {{baseUrl}}/api/patient/tray-orders
+Cookie: patientId={{patientId}}
+Content-Type: application/json
+
+{
+    "trays": [
+        {
+            "scheduled_for": "2026-02-08T12:00:00.000Z",
+            "mealTime": "lunch",
+            "recipe_ids": ["ad3de666-05e4-416c-a7d4-a5c5cf79d6f4"]
+        }
+    ]
+}
+
+### DELETE tray orders
+DELETE {{baseUrl}}/api/patient/tray-orders
+Cookie: patientId={{patientId}}
+Content-Type: application/json
+
+{
+    "trayOrderIds": ["<tray-order-id-here>"]
+}
 
 ###
