@@ -155,3 +155,16 @@ testing admin end-points:
 now that I have a patient with some restrictions. and now that breakfast and lunch has come and gone, I am going to play with the end-points that deal with creation of meals both automated and not
 
 ---
+
+QUESTION
+I am struggling to decide how to trigger the automated system in part because I am not able to discern what you want based on the "entrypoint.ts" and the "smartOrder.ts" files.
+
+If you have been reading along with me... I envisioned a cron job that would kick of three times a day with a parameter for the meal...
+
+This allows a lot of control to the human but potential for a human to mess up.... That said, going with a computer approach would have to keep track if something was run already. Which maybe good to do but not for MVP.
+
+I am still going with the cron job idea and still going with calling it three times a day, when calling we must supply what meal we are crating.
+
+Also as a side not, last night I was thinking that this should set the system in "orders have been closed mode"
+
+I will let the system decide what meals to start preparing for.
