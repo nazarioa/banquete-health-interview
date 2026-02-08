@@ -4,7 +4,7 @@ import {
     DeleteTrayOrdersResponse,
     DietOrderResponse,
     ItemCategory,
-    MealsResponse,
+    RecipeResponse,
     MealTimeInput,
     ScheduledTrayResponse,
     toMealTimeEnum,
@@ -44,10 +44,10 @@ export const getDietOrder = async (patientId: string): Promise<DietOrderResponse
  * @param category - optional. the type of food (beverages, sides, entrees, desserts)
  * @returns List of available recipes
  */
-export const getAvailableMeals = async (
+export const getAvailableRecipes = async (
     patientId: string,
     category?: ItemCategory,
-): Promise<MealsResponse> => {
+): Promise<RecipeResponse> => {
     const dietOrder = await getDietOrder(patientId);
     const remainingBudget = dietOrder.maximum_calories - dietOrder.calories_consumed;
 
@@ -63,7 +63,7 @@ export const getAvailableMeals = async (
         },
     });
 
-    return { meals: recipes };
+    return { recipes };
 };
 
 /**

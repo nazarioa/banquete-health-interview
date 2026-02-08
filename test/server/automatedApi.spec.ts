@@ -51,7 +51,7 @@ describe('AutomatedApi', () => {
 
             const result = await getAvailableMeals(patient.id, 'lunch');
 
-            expect(result.meals.length).toBeGreaterThan(0);
+            expect(result.recipes.length).toBeGreaterThan(0);
         });
     });
 

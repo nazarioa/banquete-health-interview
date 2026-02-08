@@ -25,8 +25,8 @@ export type DietOrderResponse = {
     calories_consumed: number;
 };
 
-export type MealsResponse = {
-    meals: Recipe[];
+export type RecipeResponse = {
+    recipes: Recipe[];
 };
 
 export type ScheduledTrayResponse = {

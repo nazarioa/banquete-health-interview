@@ -35,7 +35,7 @@ router.get('/available-meals/:patientId', async (req, res) => {
         }
         */
 
-        const result = await AutomatedApi.getAvailableMeals(req.params.patientId);
+        const result = await AutomatedApi.getAvailableRecipes(req.params.patientId);
         res.json(result);
     } catch (error) {
         res.status(400).json({ error: (error as Error).message });

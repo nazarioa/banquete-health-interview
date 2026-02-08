@@ -1,7 +1,7 @@
 import { db } from '../../src/db';
 import {
     getDietOrder,
-    getAvailableMeals,
+    getAvailableRecipes,
     getTrayOrders,
     postTrayOrders,
     deleteTrayOrders,
@@ -88,10 +88,10 @@ describe('PatientApi', () => {
             await db.recipe.create({ data: { name: 'Small Meal', category: 'Entrees', calories: 300 } });
             await db.recipe.create({ data: { name: 'Large Meal', category: 'Entrees', calories: 800 } });
 
-            const result = await getAvailableMeals(patient.id, 'lunch');
+            const result = await getAvailableRecipes(patient.id, 'lunch');
 
             // Should include both recipes plus any from seed data
-            expect(result.meals.length).toBeGreaterThanOrEqual(2);
+            expect(result.recipes.length).toBeGreaterThanOrEqual(2);
         });
 
         it('filters out recipes exceeding remaining calorie budget', async () => {
@@ -105,9 +105,9 @@ describe('PatientApi', () => {
                 data: { name: 'Huge Meal', category: 'Entrees', calories: 2000 },
             });
 
-            const result = await getAvailableMeals(patient.id, 'dinner');
+            const result = await getAvailableRecipes(patient.id, 'dinner');
 
-            const recipeIds = result.meals.map((m) => m.id);
+            const recipeIds = result.recipes.map((m) => m.id);
             expect(recipeIds).toContain(smallRecipe.id);
             expect(recipeIds).not.toContain(hugeRecipe.id);
         });
@@ -122,9 +122,9 @@ describe('PatientApi', () => {
 
             const patient = await createPatientWithDietOrder('Zero Budget Patient', 0, 0);
 
-            const result = await getAvailableMeals(patient.id, 'breakfast');
+            const result = await getAvailableRecipes(patient.id, 'breakfast');
 
-            expect(result.meals.length).toBe(0);
+            expect(result.recipes.length).toBe(0);
         });
 
         it('orders recipes by calories ascending', async () => {
@@ -134,11 +134,11 @@ describe('PatientApi', () => {
             await db.recipe.create({ data: { name: 'Small', category: 'Sides', calories: 100 } });
             await db.recipe.create({ data: { name: 'Large', category: 'Entrees', calories: 900 } });
 
-            const result = await getAvailableMeals(patient.id, 'lunch');
+            const result = await getAvailableRecipes(patient.id, 'lunch');
 
             // Verify ascending order
-            for (let i = 1; i < result.meals.length; i++) {
-                expect(result.meals[i].calories).toBeGreaterThanOrEqual(result.meals[i - 1].calories);
+            for (let i = 1; i < result.recipes.length; i++) {
+                expect(result.recipes[i].calories).toBeGreaterThanOrEqual(result.recipes[i - 1].calories);
             }
         });
     });
