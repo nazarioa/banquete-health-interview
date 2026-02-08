@@ -4,6 +4,8 @@ import { DietOrderResponse, MealTimeHour } from './types';
 
 const DESSERT_CALORIE_APPROXIMATION = 120;
 
+const CALORIE_OF_QUICK_SNAK = 100;
+
 // APPROVED - some comments
 
 // TODO: Maybe replace this with date-fns..
@@ -133,3 +135,122 @@ export const calcAdjustedMealCalorieTarget = (
     return adjustedTarget;
 }
 
+
+/**
+ * Builds a complete meal based on the amount of calories available and the type of mealTime.
+ * Slightly opinionated and should be reviewed by product...
+ *
+ * If the patient has a zero `mealCalorieTarget` a zero calorie drink (water) is returned.
+ * If the patient has a CALORIE_OF_QUICK_SNAK or less of available calories to consume, return a snack and a zero calorie drink.
+ * After that:
+ * - Try to add the heaviest caloric items (entree).
+ * - Then a side (ahead of dessert or beverage) as the assumption is that they have a higher nutritional value.
+ * - Followed by a dessert if mealTime is dinner, and they have the calories.
+ * - Then offer a drink if they have the calories.
+ * - Up two sides so long as they are within bounds
+ *
+ *
+ *
+ * @param mealTime - Used to figure out if desert should be included. Could also be used to keep high caloric drinks to breakfast.
+ * @param mealCalorieTarget - what THIS meals calorie target should be. For example, if they Patient had a large breakfast,
+ * this function should call with a lower value to still give the Patient somthing but not push them over a limit.
+ * @param menuItems
+ */
+export const mealBuilder = (
+  mealTime: MealTimeHour,
+  mealCalorieTarget: number,
+  menuItems: {
+      entrees: Array<Recipe>;
+      beverages: Array<Recipe>;
+      sides: Array<Recipe>;
+      desserts: Array<Recipe>;
+  }
+): Array<Recipe> => {
+    const zeroCal = [menuItems.sides.find(s => s.calories  === 0)].filter(x => !!x);
+
+    // If patient has no calorie budget we should at least something with zero calories.
+    if (mealCalorieTarget <= 0) return zeroCal;
+
+    // If the patient has a very small calorie budget (the size of a snack) return that.
+    // If nothing is found, return at least something with zero calories.
+    const aSmallBite = menuItems.sides.find(s => s.calories <= mealCalorieTarget)
+    if (mealCalorieTarget <= CALORIE_OF_QUICK_SNAK &&  mealCalorieTarget > 0) {
+        return aSmallBite ? [aSmallBite, ...zeroCal] : zeroCal
+    }
+
+    const selected: {
+        beverage: Recipe | null;
+        dessert: Recipe | null;
+        entree: Recipe | null;
+        sides: Array<Recipe>;
+    } = {
+        beverage: null,
+        dessert: null,
+        entree: null,
+        sides: [],
+    }
+
+    let loopCount = 0;
+    let remainingCalories  = mealCalorieTarget;
+
+    // keep trying combinations until
+    while (remainingCalories > (-1 * CALORIE_OF_QUICK_SNAK / 2)) {
+        const indexOfRandomEntree = Math.floor(Math.random() * menuItems.entrees.length);
+        const entree = menuItems.entrees[indexOfRandomEntree];
+        if (remainingCalories > entree.calories) {
+            selected.entree = entree;
+            remainingCalories = remainingCalories - selected.entree.calories;
+        }
+
+        // If the patient only has enough calorie budget for an entree and snack, serve that.
+        if (remainingCalories <= CALORIE_OF_QUICK_SNAK) {
+            const aSmallBite = menuItems.sides.find(s => s.calories <= mealCalorieTarget);
+            return [selected.entree, aSmallBite, ...zeroCal].filter(x => !!x);
+        }
+
+        // offer them the first side...
+        const indexOfSide1 = Math.floor(Math.random() * menuItems.sides.length);
+        const side1 = menuItems.sides[indexOfSide1];
+
+        if (remainingCalories <= CALORIE_OF_QUICK_SNAK) {
+            return [selected.entree, side1, ...zeroCal].filter(x => !!x);
+        } else {
+            remainingCalories = remainingCalories - side1.calories;
+            selected.sides.push(side1);
+        }
+
+        // Only offer dessert if dinner and they have the budget.
+        const indexOfDessert = Math.floor(Math.random() * menuItems.desserts.length);
+        const dessert = menuItems.desserts[indexOfDessert];
+
+        if (mealTime === 'dinner' && remainingCalories >= dessert.calories) {
+            remainingCalories = remainingCalories - dessert.calories;
+            selected.beverage = dessert;
+        }
+
+        const indexOfRandomBeverage = Math.floor(Math.random() * menuItems.beverages.length);
+        const beverage = menuItems.beverages[indexOfRandomBeverage];
+        if (remainingCalories >= beverage.calories) {
+            remainingCalories = remainingCalories - beverage.calories;
+            selected.beverage = beverage;
+        }
+
+        // let them have up to 2 more sides if they have the budget.
+        for (let i = 0; i < 2 && remainingCalories > ((CALORIE_OF_QUICK_SNAK * -1) / 2) ; i++) {
+            const indexOfSide = Math.floor(Math.random() * menuItems.sides.length);
+            const side = menuItems.sides[indexOfSide];
+            selected.sides.push(side);
+            remainingCalories = remainingCalories - side.calories;
+        }
+
+        if (selected.entree && selected.beverage && selected.sides.length > 1) {
+            return [selected.entree, selected.beverage, selected.dessert, ...zeroCal].filter(x => !!x);
+        }
+
+        loopCount++;
+        // If code gets here, it was not able to build a meal. return an empty array to trigger a failed response.
+        if (loopCount === 5) return [];
+    }
+
+    return [selected.entree, selected.beverage, selected.dessert, ...zeroCal].filter(x => !!x);
+}
