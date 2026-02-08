@@ -115,6 +115,7 @@ export const calcAdjustedMealCalorieTarget = (
    // Calculate roughly a third of the average calories that they need to have minus some space for dessert.
    // This represents the target caloric value of the meal being assembled.
    const _mealCalorieTargetBase = Math.floor(
+      // calculate the average calorie count per day and then divide that over a day (three meals).
       (dietOrder.maximumCalories + dietOrder.minimumCalories) / 2 / 3,
    );
    const targetDinner = _mealCalorieTargetBase + DESSERT_CALORIE_APPROXIMATION;
@@ -197,7 +198,7 @@ export const mealBuilder = (
    while (remainingCalories > (-1 * CALORIE_OF_QUICK_SNAK) / 2) {
       const indexOfRandomEntree = Math.floor(Math.random() * menuItems.entrees.length);
       const entree = menuItems.entrees[indexOfRandomEntree];
-      if (remainingCalories > entree.calories) {
+      if (entree && remainingCalories > entree.calories) {
          selected.entree = entree;
          remainingCalories = remainingCalories - selected.entree.calories;
       }
@@ -211,10 +212,7 @@ export const mealBuilder = (
       // offer them the first side...
       const indexOfSide1 = Math.floor(Math.random() * menuItems.sides.length);
       const side1 = menuItems.sides[indexOfSide1];
-
-      if (remainingCalories <= CALORIE_OF_QUICK_SNAK) {
-         return [selected.entree, side1, ...zeroCal].filter((x) => !!x);
-      } else {
+      if (side1 && remainingCalories >= side1.calories) {
          remainingCalories = remainingCalories - side1.calories;
          selected.sides.push(side1);
       }
@@ -223,14 +221,14 @@ export const mealBuilder = (
       const indexOfDessert = Math.floor(Math.random() * menuItems.desserts.length);
       const dessert = menuItems.desserts[indexOfDessert];
 
-      if (mealTime === 'dinner' && remainingCalories >= dessert.calories) {
+      if (mealTime === 'dinner' && dessert && remainingCalories >= dessert.calories) {
          remainingCalories = remainingCalories - dessert.calories;
          selected.beverage = dessert;
       }
 
       const indexOfRandomBeverage = Math.floor(Math.random() * menuItems.beverages.length);
       const beverage = menuItems.beverages[indexOfRandomBeverage];
-      if (remainingCalories >= beverage.calories) {
+      if (beverage && remainingCalories >= beverage.calories) {
          remainingCalories = remainingCalories - beverage.calories;
          selected.beverage = beverage;
       }
@@ -239,20 +237,27 @@ export const mealBuilder = (
       for (let i = 0; i < 2 && remainingCalories > (CALORIE_OF_QUICK_SNAK * -1) / 2; i++) {
          const indexOfSide = Math.floor(Math.random() * menuItems.sides.length);
          const side = menuItems.sides[indexOfSide];
-         selected.sides.push(side);
-         remainingCalories = remainingCalories - side.calories;
+         if (side && remainingCalories > side.calories) {
+            selected.sides.push(side);
+            remainingCalories = remainingCalories - side.calories;
+         }
       }
 
-      if (selected.entree && selected.beverage && selected.sides.length > 1) {
-         return [selected.entree, selected.beverage, selected.dessert, ...zeroCal].filter(
-            (x) => !!x,
-         );
+      if (remainingCalories <= 0) {
+         return [
+            selected.entree,
+            selected.beverage,
+            selected.dessert,
+            ...selected.sides,
+            ...zeroCal,
+         ].filter((x) => !!x);
       }
 
+      // If code gets here, it was not able to build a meal.
+      // return an empty array to trigger a failed response.
       loopCount++;
-      // If code gets here, it was not able to build a meal. return an empty array to trigger a failed response.
-      if (loopCount === 5) return [];
+      if (loopCount === 5) break;
    }
 
-   return [selected.entree, selected.beverage, selected.dessert, ...zeroCal].filter((x) => !!x);
+   return [];
 };
