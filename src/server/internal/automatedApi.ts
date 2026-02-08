@@ -6,6 +6,7 @@ import {
     ExecutePrepResponse,
     ItemCategory,
     MealsResponse,
+    MealTimeHour,
     MealTimeInput,
     toMealTimeEnum,
 } from './types';
@@ -59,7 +60,7 @@ const hasExistingOrder = async (
 /**
  * Gets the scheduled serve time for a given meal time.
  */
-const getServeTime = (date: Date, mealTime: 'breakfast' | 'lunch' | 'dinner'): Date => {
+const getServeTime = (date: Date, mealTime: MealTimeHour): Date => {
     const serveTime = new Date(date);
 
     switch (mealTime) {
@@ -93,7 +94,7 @@ const getServeTime = (date: Date, mealTime: 'breakfast' | 'lunch' | 'dinner'): D
  * @returns Summary of actions taken
  */
 export const executePrep = async (
-    mealTime: 'breakfast' | 'lunch' | 'dinner'
+    mealTime: MealTimeHour
 ): Promise<ExecutePrepResponse> => {
     const today = new Date();
     const serveTime = getServeTime(today, mealTime);

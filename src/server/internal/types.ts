@@ -6,6 +6,7 @@ export type ItemCategory = 'Sides' | 'Beverages' | 'Desserts' | 'Entrees';
 
 // Lowercase mealTime type for API layer
 export type MealTimeInput = 'breakfast' | 'lunch' | 'dinner' | 'snack';
+export type MealTimeHour = 'breakfast' | 'lunch' | 'dinner';
 
 // Helper to convert API input to Prisma enum
 export const toMealTimeEnum = (input: MealTimeInput): MealTime => {
