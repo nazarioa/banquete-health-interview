@@ -1,5 +1,9 @@
 import { MealTime, TrayOrder, Recipe } from '@prisma/client';
 
+// TODO: This needs to be included as part of Prisma data type. And made to be LowerCase
+export type ItemCategory = 'Sides' | 'Beverages' | 'Desserts' | 'Entrees';
+
+
 // Lowercase mealTime type for API layer
 export type MealTimeInput = 'breakfast' | 'lunch' | 'dinner' | 'snack';
 

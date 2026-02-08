@@ -168,3 +168,11 @@ I am still going with the cron job idea and still going with calling it three ti
 Also as a side not, last night I was thinking that this should set the system in "orders have been closed mode"
 
 I will let the system decide what meals to start preparing for.
+
+---
+
+Noticing that a Meal should consist of One drink One Entrée, maybe a side, and sometimes a dessert. I am manually adjusting the code at this point. to get this bit of logic in there.
+
+I have found that some types need to be cleaned up/or added. Left todos.
+
+---

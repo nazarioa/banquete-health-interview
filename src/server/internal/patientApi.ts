@@ -1,14 +1,15 @@
 import { db } from '../../db';
 import { calculateCaloriesConsumed, getDateRangeForWeek } from './helpers';
 import {
+    DeleteTrayOrdersResponse,
     DietOrderResponse,
+    ItemCategory,
     MealsResponse,
+    MealTimeInput,
     ScheduledTrayResponse,
+    toMealTimeEnum,
     TrayOrderRequest,
     TrayOrderResponse,
-    DeleteTrayOrdersResponse,
-    MealTimeInput,
-    toMealTimeEnum,
 } from './types';
 
 /**
@@ -40,12 +41,12 @@ export const getDietOrder = async (patientId: string): Promise<DietOrderResponse
 /**
  * Returns recipes that fit within the patient's remaining calorie budget.
  * @param patientId - The UUID of the patient
- * @param mealTime - The meal time (not used for filtering, but passed for API consistency)
+ * @param category - optional. the type of food (beverages, sides, entrees, desserts)
  * @returns List of available recipes
  */
 export const getAvailableMeals = async (
     patientId: string,
-    mealTime: MealTimeInput
+    category?: ItemCategory,
 ): Promise<MealsResponse> => {
     const dietOrder = await getDietOrder(patientId);
     const remainingBudget = dietOrder.maximum_calories - dietOrder.calories_consumed;
@@ -55,9 +56,10 @@ export const getAvailableMeals = async (
             calories: {
                 lte: remainingBudget,
             },
+            category: category ? category : undefined, // filter by category if included.
         },
         orderBy: {
-            calories: 'asc',
+            calories: 'desc',
         },
     });
 

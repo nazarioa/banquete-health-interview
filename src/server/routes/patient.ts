@@ -25,6 +25,7 @@ router.get('/diet-order', async (req, res) => {
  * GET /patient/available-meals/:mealTime
  * Returns recipes available within the patient's remaining calorie budget
  */
+// TODO: naz maybe change this to include query param for category...
 router.get('/available-meals/:mealTime', async (req, res) => {
     try {
         const mealTime = req.params.mealTime as MealTimeInput;
@@ -33,7 +34,7 @@ router.get('/available-meals/:mealTime', async (req, res) => {
             return;
         }
 
-        const result = await PatientApi.getAvailableMeals(req.patientId!, mealTime);
+        const result = await PatientApi.getAvailableMeals(req.patientId!);
         res.json(result);
     } catch (error) {
         res.status(400).json({ error: (error as Error).message });

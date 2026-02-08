@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { authenticateAdmin } from '../middleware/auth';
 import * as AutomatedApi from '../internal/automatedApi';
-import { MealTimeInput } from '../internal/types';
 
 const router = Router();
 
@@ -23,18 +22,20 @@ router.get('/diet-order/:patientId', async (req, res) => {
 });
 
 /**
- * GET /automated/available-meals/:patientId/:mealTime
+ * GET /automated/available-meals/:patientId
  * Returns available meals for a specific patient and meal time
  */
-router.get('/available-meals/:patientId/:mealTime', async (req, res) => {
+ // TODO: Add query param forItemCategory
+router.get('/available-meals/:patientId', async (req, res) => {
     try {
-        const mealTime = req.params.mealTime as MealTimeInput;
+        /*
         if (!['breakfast', 'lunch', 'dinner', 'snack'].includes(mealTime)) {
             res.status(400).json({ error: 'Invalid mealTime. Must be breakfast, lunch, dinner, or snack' });
             return;
         }
+        */
 
-        const result = await AutomatedApi.getAvailableMeals(req.params.patientId, mealTime);
+        const result = await AutomatedApi.getAvailableMeals(req.params.patientId);
         res.json(result);
     } catch (error) {
         res.status(400).json({ error: (error as Error).message });

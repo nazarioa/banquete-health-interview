@@ -1,10 +1,11 @@
 import { db } from '../../db';
-import { getStartOfDay, getEndOfDay } from './helpers';
-import { getDietOrder, getAvailableMeals as patientGetAvailableMeals } from './patientApi';
+import { getEndOfDay, getStartOfDay } from './helpers';
+import { getAvailableMeals as patientGetAvailableMeals, getDietOrder } from './patientApi';
 import {
     DietOrderResponse,
-    MealsResponse,
     ExecutePrepResponse,
+    ItemCategory,
+    MealsResponse,
     MealTimeInput,
     toMealTimeEnum,
 } from './types';
@@ -25,9 +26,9 @@ export const getAdminDietOrder = async (patientId: string): Promise<DietOrderRes
 // TODO: I think this is not actually getting meals by calorie budget
 export const getAvailableMeals = async (
     patientId: string,
-    mealTime: MealTimeInput
+    category?: ItemCategory
 ): Promise<MealsResponse> => {
-    return patientGetAvailableMeals(patientId, mealTime);
+    return patientGetAvailableMeals(patientId, category);
 };
 
 /**
@@ -133,7 +134,7 @@ export const executePrep = async (
             }
 
             // Get available meals within budget
-            const availableMeals = await getAvailableMeals(patient.id, mealTime);
+            const availableMeals = await getAvailableMeals(patient.id);
 
             if (availableMeals.meals.length === 0) {
                 result.errors.push({
