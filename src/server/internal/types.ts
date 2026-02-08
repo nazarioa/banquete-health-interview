@@ -19,9 +19,9 @@ export const fromMealTimeEnum = (mealTime: MealTime): MealTimeInput => {
 
 // PatientApi Response Types
 export type DietOrderResponse = {
-   minimum_calories: number;
-   maximum_calories: number;
-   calories_consumed: number;
+   minimumCalories: number;
+   maximumCalories: number;
+   caloriesConsumed: number;
 };
 
 export type RecipeResponse = {
@@ -38,9 +38,9 @@ export type ScheduledTrayResponse = {
 // PatientApi Request Types
 export type TrayOrderRequest = {
    trays: Array<{
-      scheduled_for: Date;
+      scheduledFor: Date;
       mealTime: MealTimeInput;
-      recipe_ids: string[];
+      recipeIds: string[];
    }>;
 };
 

@@ -31,10 +31,10 @@ export const getDietOrder = async (patientId: string): Promise<DietOrderResponse
    const caloriesConsumed = await calculateCaloriesConsumed(patientId, new Date());
 
    return {
-      minimum_calories: patientDietOrder.dietOrder.minimumCalories ?? 0,
+      minimumCalories: patientDietOrder.dietOrder.minimumCalories ?? 0,
       // TODO: Is this a resonable upper bound?
-      maximum_calories: patientDietOrder.dietOrder.maximumCalories ?? Infinity,
-      calories_consumed: caloriesConsumed,
+      maximumCalories: patientDietOrder.dietOrder.maximumCalories ?? Infinity,
+      caloriesConsumed: caloriesConsumed,
    };
 };
 
@@ -49,7 +49,7 @@ export const getAvailableRecipes = async (
    category?: ItemCategory,
 ): Promise<RecipeResponse> => {
    const dietOrder = await getDietOrder(patientId);
-   const remainingBudget = dietOrder.maximum_calories - dietOrder.calories_consumed;
+   const remainingBudget = dietOrder.maximumCalories - dietOrder.caloriesConsumed;
 
    const recipes = await db.recipe.findMany({
       where: {
@@ -127,7 +127,7 @@ export const postTrayOrders = async (
    request: TrayOrderRequest,
 ): Promise<TrayOrderResponse> => {
    // Validate all recipe IDs exist
-   const allRecipeIds = request.trays.flatMap((t) => t.recipe_ids);
+   const allRecipeIds = request.trays.flatMap((t) => t.recipeIds);
    const uniqueRecipeIds = [...new Set(allRecipeIds)];
    const recipes = await db.recipe.findMany({
       where: { id: { in: uniqueRecipeIds } },
@@ -144,12 +144,12 @@ export const postTrayOrders = async (
 
    // Get current diet order to check budget
    const dietOrder = await getDietOrder(patientId);
-   const remainingBudget = dietOrder.maximum_calories - dietOrder.calories_consumed;
+   const remainingBudget = dietOrder.maximumCalories - dietOrder.caloriesConsumed;
 
    // Calculate total calories for all new orders
    let totalNewCalories = 0;
    for (const tray of request.trays) {
-      for (const recipeId of tray.recipe_ids) {
+      for (const recipeId of tray.recipeIds) {
          totalNewCalories += recipeCalorieMap.get(recipeId) ?? 0;
       }
    }
@@ -168,10 +168,10 @@ export const postTrayOrders = async (
          const trayOrder = await tx.trayOrder.create({
             data: {
                patientId,
-               scheduledFor: new Date(tray.scheduled_for),
+               scheduledFor: new Date(tray.scheduledFor),
                mealTime: toMealTimeEnum(tray.mealTime),
                recipes: {
-                  create: tray.recipe_ids.map((recipeId) => ({
+                  create: tray.recipeIds.map((recipeId) => ({
                      recipeId,
                   })),
                },

@@ -115,7 +115,7 @@ export const calcAdjustedMealCalorieTarget = (
    // Calculate roughly a third of the average calories that they need to have minus some space for dessert.
    // This represents the target caloric value of the meal being assembled.
    const _mealCalorieTargetBase = Math.floor(
-      (dietOrder.maximum_calories + dietOrder.minimum_calories) / 2 / 3,
+      (dietOrder.maximumCalories + dietOrder.minimumCalories) / 2 / 3,
    );
    const targetDinner = _mealCalorieTargetBase + DESSERT_CALORIE_APPROXIMATION;
    const targetBreakfastLunch = _mealCalorieTargetBase - DESSERT_CALORIE_APPROXIMATION / 2;
@@ -124,13 +124,13 @@ export const calcAdjustedMealCalorieTarget = (
    let adjustedTarget: number;
    if (mealTime === 'dinner') {
       // subtract from the targetDinner any unexpected over or under consumption aside from the expected 2 meals, breakfast and lunch to get dinners target true target.
-      adjustedTarget = targetDinner - (dietOrder.calories_consumed - targetBreakfastLunch * 2);
+      adjustedTarget = targetDinner - (dietOrder.caloriesConsumed - targetBreakfastLunch * 2);
    } else if (mealTime === 'lunch') {
       // subtract from the targetBreakfastLunch any unexpected over or under consumption aside from the expected breakfast and lunch to get dinners target true target.
-      adjustedTarget = targetBreakfastLunch - (dietOrder.calories_consumed - targetBreakfastLunch);
+      adjustedTarget = targetBreakfastLunch - (dietOrder.caloriesConsumed - targetBreakfastLunch);
    } else {
-      // if Patient had a snack before breakfast, it would show here but most of the time calories_consumed in the morning will be 0.
-      adjustedTarget = targetBreakfastLunch - dietOrder.calories_consumed;
+      // if Patient had a snack before breakfast, it would show here but most of the time caloriesConsumed in the morning will be 0.
+      adjustedTarget = targetBreakfastLunch - dietOrder.caloriesConsumed;
    }
 
    return adjustedTarget;

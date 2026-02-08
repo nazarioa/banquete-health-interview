@@ -33,8 +33,8 @@ describe('PatientApi', () => {
 
          const result = await getDietOrder(patient.id);
 
-         expect(result.minimum_calories).toBe(1500);
-         expect(result.maximum_calories).toBe(2500);
+         expect(result.minimumCalories).toBe(1500);
+         expect(result.maximumCalories).toBe(2500);
       });
 
       it('includes calories consumed for the day', async () => {
@@ -58,7 +58,7 @@ describe('PatientApi', () => {
 
          const result = await getDietOrder(patient.id);
 
-         expect(result.calories_consumed).toBe(500);
+         expect(result.caloriesConsumed).toBe(500);
       });
 
       it('throws error for patient without diet order', async () => {
@@ -72,7 +72,7 @@ describe('PatientApi', () => {
 
          const result = await getDietOrder(patient.id);
 
-         expect(result.calories_consumed).toBe(0);
+         expect(result.caloriesConsumed).toBe(0);
       });
    });
 
@@ -281,9 +281,9 @@ describe('postTrayOrders', () => {
       const result = await postTrayOrders(patient.id, {
          trays: [
             {
-               scheduled_for: tomorrow,
+               scheduledFor: tomorrow,
                mealTime: 'lunch',
-               recipe_ids: [recipe.id],
+               recipeIds: [recipe.id],
             },
          ],
       });
@@ -307,9 +307,9 @@ describe('postTrayOrders', () => {
       const result = await postTrayOrders(patient.id, {
          trays: [
             {
-               scheduled_for: tomorrow,
+               scheduledFor: tomorrow,
                mealTime: 'dinner',
-               recipe_ids: [recipe1.id, recipe2.id],
+               recipeIds: [recipe1.id, recipe2.id],
             },
          ],
       });
@@ -334,9 +334,9 @@ describe('postTrayOrders', () => {
 
       const result = await postTrayOrders(patient.id, {
          trays: [
-            { scheduled_for: tomorrow, mealTime: 'breakfast', recipe_ids: [recipe.id] },
-            { scheduled_for: tomorrow, mealTime: 'lunch', recipe_ids: [recipe.id] },
-            { scheduled_for: tomorrow, mealTime: 'dinner', recipe_ids: [recipe.id] },
+            { scheduledFor: tomorrow, mealTime: 'breakfast', recipeIds: [recipe.id] },
+            { scheduledFor: tomorrow, mealTime: 'lunch', recipeIds: [recipe.id] },
+            { scheduledFor: tomorrow, mealTime: 'dinner', recipeIds: [recipe.id] },
          ],
       });
 
@@ -354,7 +354,7 @@ describe('postTrayOrders', () => {
 
       await expect(
          postTrayOrders(patient.id, {
-            trays: [{ scheduled_for: tomorrow, mealTime: 'lunch', recipe_ids: [recipe.id] }],
+            trays: [{ scheduledFor: tomorrow, mealTime: 'lunch', recipeIds: [recipe.id] }],
          }),
       ).rejects.toThrow('exceeds calorie budget');
    });
@@ -369,9 +369,9 @@ describe('postTrayOrders', () => {
          postTrayOrders(patient.id, {
             trays: [
                {
-                  scheduled_for: tomorrow,
+                  scheduledFor: tomorrow,
                   mealTime: 'lunch',
-                  recipe_ids: ['non-existent-id'],
+                  recipeIds: ['non-existent-id'],
                },
             ],
          }),
