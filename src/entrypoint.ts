@@ -31,31 +31,32 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 // Start server
 export const startServer = () => {
    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-      console.log('');
-      console.log('API Endpoints:');
-      console.log('  Health:     GET  /health');
-      console.log('');
-      console.log('  Patient API (requires patientId cookie):');
-      console.log('    GET  /api/patient/diet-order');
-      console.log('    GET  /api/patient/available-meals/:mealTime');
-      console.log('    GET  /api/patient/tray-orders');
-      console.log('    POST /api/patient/tray-orders');
-      console.log('    DELETE /api/patient/tray-orders');
-      console.log('');
-      console.log('  Admin API (requires Bearer token):');
-      console.log('    POST /api/admin/auth/register');
-      console.log('    POST /api/admin/auth/login');
-      console.log('    CRUD /api/admin/patients');
-      console.log('    CRUD /api/admin/recipes');
-      console.log('    CRUD /api/admin/diet-orders');
-      console.log('    CRUD /api/admin/patient-diet-orders');
-      console.log('    CRUD /api/admin/tray-orders');
-      console.log('');
-      console.log('  Automated API (requires Bearer token):');
-      console.log('    GET  /api/automated/diet-order/:patientId');
-      console.log('    GET  /api/automated/available-meals/:patientId/:mealTime');
-      console.log('    POST /api/automated/execute-prep/:mealTime');
+      // Startup Instruction
+      console.log(`Server running on http://localhost:${PORT}
+      API Endpoints:
+        Health:     GET  /health
+
+        Patient API (requires patientId cookie):
+          GET  /api/patient/diet-order
+          GET  /api/patient/available-meals/:mealTime
+          GET  /api/patient/tray-orders
+          POST /api/patient/tray-orders
+          DELETE /api/patient/tray-orders
+
+        Admin API (requires Bearer token):
+          POST /api/admin/auth/register
+          POST /api/admin/auth/login
+          CRUD /api/admin/patients
+          CRUD /api/admin/recipes
+          CRUD /api/admin/diet-orders
+          CRUD /api/admin/patient-diet-orders
+          CRUD /api/admin/tray-orders
+
+        Automated API (requires Bearer token):
+          GET  /api/automated/diet-order/:patientId
+          GET  /api/automated/available-meals/:patientId/:mealTime
+          POST /api/automated/execute-prep/:mealTime
+       `);
    });
 };
 
