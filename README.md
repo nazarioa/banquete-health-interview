@@ -35,7 +35,7 @@ You will primarily work with the following files:
 case-challenge/
 ├── prisma/
 │   ├── schema.prisma       # Database schema definition
-│   └── seed/               
+│   └── seed/
 │       ├── rawData/        # Sample seed data
 ├── src/
 │   ├── smartOrder.ts       # Implement triggerSmartOrderSystem here
@@ -56,6 +56,7 @@ npm run test      # Test that everything is working correctly
 ```
 
 You can connect via a GUI tool such as PgAdmin using the following configuration:
+
 - Host: 127.0.0.1
 - Port: 5442 (not the default 5432, to avoid conflicts)
 - Database: dev
@@ -63,6 +64,7 @@ You can connect via a GUI tool such as PgAdmin using the following configuration
 - Password: local
 
 A simple test framework has also been provided. Tests reset the database state before each run.
+
 - Run tests with: npm run test
 - See test/example.spec.ts for a sample test
 - Raw CSV seed data is available in prisma/seed/rawData
@@ -76,41 +78,50 @@ The requirements are intentionally minimal. As a startup, engineers must often a
 - Diet Orders specify minimum and maximum daily calories. Your system should account for what a patient has already consumed earlier in the day.
 
 ## System Design
+
 Once you complete the coding portion, please also create a deployment diagram using a tool such as [DrawIO](https://www.drawio.com/)
+
 - Show how your Smart Ordering system would be deployed in the cloud
 - Label resources with AWS names if possible (though GCP or Azure is acceptable)
 - Export your design as a PNG and include it in the `systemDesign` directory as part of your submission
-
 
 ## Guidelines
 
 - Aim to spend no more than ~3 hours in total
 - You are encouraged to use AI tools (e.g., Copilot, ChatGPT, Cursor) as you normally would in your workflow
-- You have __full freedom to modify any part of the codebase__ — including the schema, seed data, directory structure, and even the coding language — if it helps you implement a cleaner or more effective solution
+- You have **full freedom to modify any part of the codebase** — including the schema, seed data, directory structure, and even the coding language — if it helps you implement a cleaner or more effective solution
 - Keep your solution pragmatic and focused. We value clarity over complexity.
 
 ## Submission
-Once you are finished, you can upload the entire `case-challenge` directory to google drive link provided in the email.  Note that a __separate__ link was provided just for your submission - you will not be able to upload your solution to the same directory that you downloaded this file from.  You may also want to run `npm run db-clean` to stop the docker container and remove its volumes.
+
+Once you are finished, you can upload the entire `case-challenge` directory to google drive link provided in the email. Note that a **separate** link was provided just for your submission - you will not be able to upload your solution to the same directory that you downloaded this file from. You may also want to run `npm run db-clean` to stop the docker container and remove its volumes.
 
 ## Useful Commands
 
 #### Spin up postgres
+
 npm run db-up
 
 #### Spin down postgres
+
 npm run db-down
 
 #### Spin down postgres and remove persistent data
+
 npm run db-clean
 
 #### Initialize and seed database
+
 npm run init-db
 
 #### Reset Database to base state
+
 npm run reset-db
 
 #### Run tests
+
 npm run test
 
 #### Run the script
+
 npm start

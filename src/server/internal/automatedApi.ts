@@ -1,19 +1,14 @@
 import { db } from '../../db';
-import {
-    calcAdjustedMealCalorieTarget,
-    getEndOfDay,
-    getStartOfDay,
-    mealBuilder
-} from './helpers';
+import { calcAdjustedMealCalorieTarget, getEndOfDay, getStartOfDay, mealBuilder } from './helpers';
 import { getAvailableRecipes as getPatientAvailableRecipes, getDietOrder } from './patientApi';
 import {
-    DietOrderResponse,
-    ExecutePrepResponse,
-    ItemCategory,
-    MealTimeHour,
-    MealTimeInput,
-    RecipeResponse,
-    toMealTimeEnum,
+   DietOrderResponse,
+   ExecutePrepResponse,
+   ItemCategory,
+   MealTimeHour,
+   MealTimeInput,
+   RecipeResponse,
+   toMealTimeEnum,
 } from './types';
 
 /**
@@ -22,7 +17,7 @@ import {
  * Used by automated systems.
  */
 export const getAdminDietOrder = async (patientId: string): Promise<DietOrderResponse> => {
-    return getDietOrder(patientId);
+   return getDietOrder(patientId);
 };
 
 /**
@@ -31,56 +26,56 @@ export const getAdminDietOrder = async (patientId: string): Promise<DietOrderRes
  */
 // TODO: I think this is not actually getting meals by calorie budget
 export const getAvailableRecipes = async (
-    patientId: string,
-    category?: ItemCategory
+   patientId: string,
+   category?: ItemCategory,
 ): Promise<RecipeResponse> => {
-    return getPatientAvailableRecipes(patientId, category);
+   return getPatientAvailableRecipes(patientId, category);
 };
 
 /**
  * Checks if a patient has a tray order for a specific day and meal time.
  */
 const hasExistingOrder = async (
-    patientId: string,
-    date: Date,
-    mealTime: MealTimeInput
+   patientId: string,
+   date: Date,
+   mealTime: MealTimeInput,
 ): Promise<boolean> => {
-    const startOfDay = getStartOfDay(date);
-    const endOfDay = getEndOfDay(date);
+   const startOfDay = getStartOfDay(date);
+   const endOfDay = getEndOfDay(date);
 
-    const existingOrder = await db.trayOrder.findFirst({
-        where: {
-            patientId,
-            mealTime: toMealTimeEnum(mealTime),
-            scheduledFor: {
-                gte: startOfDay,
-                lte: endOfDay,
-            },
-        },
-    });
+   const existingOrder = await db.trayOrder.findFirst({
+      where: {
+         patientId,
+         mealTime: toMealTimeEnum(mealTime),
+         scheduledFor: {
+            gte: startOfDay,
+            lte: endOfDay,
+         },
+      },
+   });
 
-    return existingOrder !== null;
+   return existingOrder !== null;
 };
 
 /**
  * Gets the scheduled serve time for a given meal time.
  */
 const getServeTime = (date: Date, mealTime: MealTimeHour): Date => {
-    const serveTime = new Date(date);
+   const serveTime = new Date(date);
 
-    switch (mealTime) {
-        case 'breakfast':
-            serveTime.setHours(8, 0, 0, 0);
-            break;
-        case 'lunch':
-            serveTime.setHours(12, 0, 0, 0);
-            break;
-        case 'dinner':
-            serveTime.setHours(18, 0, 0, 0);
-            break;
-    }
+   switch (mealTime) {
+      case 'breakfast':
+         serveTime.setHours(8, 0, 0, 0);
+         break;
+      case 'lunch':
+         serveTime.setHours(12, 0, 0, 0);
+         break;
+      case 'dinner':
+         serveTime.setHours(18, 0, 0, 0);
+         break;
+   }
 
-    return serveTime;
+   return serveTime;
 };
 
 /**
@@ -98,90 +93,88 @@ const getServeTime = (date: Date, mealTime: MealTimeHour): Date => {
  * @param mealTime - The meal time to prepare orders for (snack not supported)
  * @returns Summary of actions taken
  */
-export const executePrep = async (
-    mealTime: MealTimeHour
-): Promise<ExecutePrepResponse> => {
-    const today = new Date();
-    const serveTime = getServeTime(today, mealTime);
+export const executePrep = async (mealTime: MealTimeHour): Promise<ExecutePrepResponse> => {
+   const today = new Date();
+   const serveTime = getServeTime(today, mealTime);
 
-    // TODO: set systemwide status that "the meals are being prepped, and orders cannot be changed".
+   // TODO: set systemwide status that "the meals are being prepped, and orders cannot be changed".
 
-    const result: ExecutePrepResponse = {
-        patientsProcessed: 0,
-        ordersCreated: 0,
-        errors: [],
-    };
+   const result: ExecutePrepResponse = {
+      patientsProcessed: 0,
+      ordersCreated: 0,
+      errors: [],
+   };
 
-    // Get all patients
-    const patients = await db.patient.findMany();
+   // Get all patients
+   const patients = await db.patient.findMany();
 
-    for (const patient of patients) {
-        result.patientsProcessed++;
+   for (const patient of patients) {
+      result.patientsProcessed++;
 
-        try {
-            // Check if patient already has an order for this meal today
-            const hasOrder = await hasExistingOrder(patient.id, today, mealTime);
-            if (hasOrder) {
-                continue; // Skip this patient
-            }
+      try {
+         // Check if patient already has an order for this meal today
+         const hasOrder = await hasExistingOrder(patient.id, today, mealTime);
+         if (hasOrder) {
+            continue; // Skip this patient
+         }
 
-            // Get patient's diet order
-            let dietOrder: DietOrderResponse;
-            try {
-                dietOrder = await getAdminDietOrder(patient.id);
-            } catch (error) {
-                // TODO: Maybe we should have a default meal for a given DietOrder?
-                // Patient has no diet order, skip with warning
-                result.errors.push({
-                    patientId: patient.id,
-                    error: `No diet order found`,
-                });
-                continue;
-            }
-
-            // Get available meals within budget
-            const {recipes: availableEntrees} = await getAvailableRecipes(patient.id, 'Entrees');
-            const {recipes: availableBeverages} = await getAvailableRecipes(patient.id, 'Beverages');
-            const {recipes: availableSides} = await getAvailableRecipes(patient.id, 'Sides');
-            const {recipes: availableDesserts} = await getAvailableRecipes(patient.id, 'Desserts');
-
-            const mealCalorieTarget = calcAdjustedMealCalorieTarget(mealTime, dietOrder)
-
-            const meal = mealBuilder(mealTime, mealCalorieTarget, {
-                entrees: availableEntrees,
-                beverages: availableBeverages,
-                sides: availableSides,
-                desserts: availableDesserts
-            })
-
-            if (!meal.length) {
-                result.errors.push({
-                    patientId: patient.id,
-                    error: `Could not build a meal within calorie budget`,
-                });
-                continue;
-            }
-
-            // Create the tray order
-            await db.trayOrder.create({
-                data: {
-                    patientId: patient.id,
-                    scheduledFor: serveTime,
-                    mealTime: toMealTimeEnum(mealTime),
-                    recipes: {
-                        create: meal.map(r => ({recipeId: r.id})),
-                    },
-                },
-            });
-
-            result.ordersCreated++;
-        } catch (error) {
+         // Get patient's diet order
+         let dietOrder: DietOrderResponse;
+         try {
+            dietOrder = await getAdminDietOrder(patient.id);
+         } catch (error) {
+            // TODO: Maybe we should have a default meal for a given DietOrder?
+            // Patient has no diet order, skip with warning
             result.errors.push({
-                patientId: patient.id,
-                error: error instanceof Error ? error.message : 'Unknown error',
+               patientId: patient.id,
+               error: `No diet order found`,
             });
-        }
-    }
+            continue;
+         }
 
-    return result;
+         // Get available meals within budget
+         const { recipes: availableEntrees } = await getAvailableRecipes(patient.id, 'Entrees');
+         const { recipes: availableBeverages } = await getAvailableRecipes(patient.id, 'Beverages');
+         const { recipes: availableSides } = await getAvailableRecipes(patient.id, 'Sides');
+         const { recipes: availableDesserts } = await getAvailableRecipes(patient.id, 'Desserts');
+
+         const mealCalorieTarget = calcAdjustedMealCalorieTarget(mealTime, dietOrder);
+
+         const meal = mealBuilder(mealTime, mealCalorieTarget, {
+            entrees: availableEntrees,
+            beverages: availableBeverages,
+            sides: availableSides,
+            desserts: availableDesserts,
+         });
+
+         if (!meal.length) {
+            result.errors.push({
+               patientId: patient.id,
+               error: `Could not build a meal within calorie budget`,
+            });
+            continue;
+         }
+
+         // Create the tray order
+         await db.trayOrder.create({
+            data: {
+               patientId: patient.id,
+               scheduledFor: serveTime,
+               mealTime: toMealTimeEnum(mealTime),
+               recipes: {
+                  create: meal.map((r) => ({ recipeId: r.id })),
+               },
+            },
+         });
+
+         result.ordersCreated++;
+      } catch (error) {
+         result.errors.push({
+            patientId: patient.id,
+            error: error instanceof Error ? error.message : 'Unknown error',
+         });
+      }
+   }
+
+   return result;
 };

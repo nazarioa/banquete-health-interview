@@ -28,11 +28,13 @@ Database connection: `postgresql://postgres:local@localhost:5442/dev`
 **Tech Stack:** TypeScript, Prisma ORM, PostgreSQL (Docker), Jest
 
 **Core Files:**
+
 - `src/smartOrder.ts` - Main implementation file for `triggerSmartOrderSystem()`
 - `src/db.ts` - Prisma client singleton
 - `src/entrypoint.ts` - CLI entry point
 
 **Database Schema (`prisma/schema.prisma`):**
+
 - `Patient` - Has many `TrayOrder`s and `PatientDietOrder`s
 - `DietOrder` - Defines calorie constraints (min/max daily calories)
 - `PatientDietOrder` - Links patients to their diet orders
@@ -41,6 +43,7 @@ Database connection: `postgresql://postgres:local@localhost:5442/dev`
 - `TrayOrderRecipe` - Links recipes to tray orders
 
 **Key Business Rules:**
+
 - Smart Ordering handles BREAKFAST, LUNCH, DINNER only (not SNACK)
 - Must not duplicate existing orders for a patient/meal
 - Must track daily calorie consumption against diet order constraints
@@ -48,6 +51,7 @@ Database connection: `postgresql://postgres:local@localhost:5442/dev`
 ## Testing
 
 Tests use Jest with automatic database reset before each test. The test framework is configured in `test/jest.config.js` with:
+
 - Global setup restores database to seed state
 - `setupFilesAfterEnv` runs before each test file
 - Single worker (`maxWorkers: 1`) for database isolation
@@ -71,6 +75,7 @@ See `systemDesign/BACKEND.md` and `systemDesign/COMMON.md` for detailed API and 
    For each patient without a TrayOrder for that day/mealTime, create one that conforms to their PatientDietOrder caloric limits.
 
 **API Structure (planned):**
+
 - PatientApi - Patient-facing calls for viewing/placing orders
 - AdminApi - CRUD operations for all data
 - AutomatedApi - System-triggered operations (cron jobs, event reactions)
