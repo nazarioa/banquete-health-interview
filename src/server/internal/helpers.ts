@@ -1,4 +1,9 @@
 import { db } from '../../db';
+import { Recipe } from '@prisma/client';
+import { DietOrderResponse, MealTimeHour } from './types';
+
+const DESSERT_CALORIE_APPROXIMATION = 120;
+
 // APPROVED - some comments
 
 // TODO: Maybe replace this with date-fns..
@@ -90,3 +95,41 @@ export const calculateCaloriesConsumed = async (patientId: string, date: Date): 
 
     return totalCalories;
 };
+
+/**
+ * Calculates the calories that a Patient has available for a given meal.
+ * Takes into consideration how many calories they have consumed that day.
+ *
+ * Does make a few assumptions.
+ * 1. Takes the average max and min calories as defined by the diet order and divides it by 3 (breakfast, lunch, dinner).
+ * 2. Barrows calories from breakfast and lunch in order to have calories for dinner.
+ * @param mealTime
+ * @param dietOrder
+ */
+export const calcAdjustedMealCalorieTarget = (
+  mealTime: MealTimeHour,
+  dietOrder: DietOrderResponse,
+): number => {
+
+    // Calculate roughly a third of the average calories that they need to have minus some space for dessert.
+    // This represents the target caloric value of the meal being assembled.
+    const _mealCalorieTargetBase = Math.floor(((dietOrder.maximum_calories + dietOrder.minimum_calories)/2)/3);
+    const targetDinner = _mealCalorieTargetBase + DESSERT_CALORIE_APPROXIMATION;
+    const targetBreakfastLunch = _mealCalorieTargetBase - (DESSERT_CALORIE_APPROXIMATION/2);
+
+    // This calculates the number of calories we must adjust based on previous eating (like snacks)
+    let adjustedTarget: number;
+    if (mealTime === 'dinner') {
+        // subtract from the targetDinner any unexpected over or under consumption aside from the expected 2 meals, breakfast and lunch to get dinners target true target.
+        adjustedTarget = targetDinner - (dietOrder.calories_consumed - (targetBreakfastLunch * 2));
+    } else if (mealTime === 'lunch') {
+        // subtract from the targetBreakfastLunch any unexpected over or under consumption aside from the expected breakfast and lunch to get dinners target true target.
+        adjustedTarget = targetBreakfastLunch - (dietOrder.calories_consumed - targetBreakfastLunch);
+    } else {
+        // if Patient had a snack before breakfast, it would show here but most of the time calories_consumed in the morning will be 0.
+        adjustedTarget = targetBreakfastLunch - dietOrder.calories_consumed;
+    }
+
+    return adjustedTarget;
+}
+
