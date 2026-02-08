@@ -40,15 +40,15 @@ type DietOrderResponse = {
 
 ```typescript
 /**
- * Returns a list of meals that conform to the "Patient"'s caloric constraint for the given "meal_time"
- * "patient_id" read from session context.
- * @param mealTime
+ * Returns a list of Recipes that conform to the "Patient"'s caloric constraint for the given "meal_time"
+ * @param patientId
+ * @param category - type of meal item (Beverage, Entree, Side, Dessert)
  */
-function getAvailableMeals(mealTime: 'breakfast' | 'lunch' | 'dinner' | 'snack' ): MealsResponse;
+function getAvailableRecipes(patientId: string, category?: ItemCategory): RecipeResponse;
 
-type MealsResponse = {
-  meals: Array<Recipie>
-}
+type RecipeResponse = {
+  recipes: Array<Recipie>;
+};
 ```
 
 ```typescript
@@ -113,15 +113,15 @@ type DietOrderResponse = {
 
 ```typescript
 /**
- * Returns a list of meals that conform to the "Patient"'s caloric constraint for the given meal_time
- * "patient_id" read from session context.
- * @param mealTime
+ * Returns a list of Recipes that conform to the "Patient"'s caloric constraint for the given "meal_time"
+ * @param patientId
+ * @param category - type of meal item (Beverage, Entree, Side, Dessert)
  */
-function getAvailableMeals(mealTime: 'breakfast' | 'lunch' | 'dinner' | 'snack' ): MealsResponse;
+function getAvailableRecipes(patientId: string, category?: ItemCategory): RecipeResponse;
 
-type MealsResponse = {
-  meals: Array<Recipie>
-}
+type RecipeResponse = {
+  recipes: Array<Recipie>;
+};
 ```
 
 

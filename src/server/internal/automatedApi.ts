@@ -27,7 +27,7 @@ export const getAdminDietOrder = async (patientId: string): Promise<DietOrderRes
 
 /**
  * Returns recipes that fit within the patient's remaining calorie budget.
- * Same as patientApi.getAvailableMeals but with explicit patient_id parameter.
+ * Same as patientApi.getAvailableRecipes but with explicit patient_id parameter.
  */
 // TODO: I think this is not actually getting meals by calorie budget
 export const getAvailableRecipes = async (

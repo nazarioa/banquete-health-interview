@@ -1,8 +1,7 @@
 import { db } from '../../src/db';
 import {
-    getAdminDietOrder,
-    getAvailableMeals,
-    executePrep,
+  getAdminDietOrder,
+  executePrep, getAvailableRecipes,
 } from '../../src/server/internal/automatedApi';
 import { getDietOrder } from '../../src/server/internal/patientApi';
 
@@ -41,19 +40,19 @@ describe('AutomatedApi', () => {
         });
     });
 
-    describe('getAvailableMeals', () => {
-        it('returns available meals for the patient', async () => {
-            const patient = await createPatientWithDietOrder('Meals Test Patient', 1500, 2500);
+  describe('getAvailableRecipes', () => {
+    it('returns available recipes for the patient', async () => {
+      const patient = await createPatientWithDietOrder('Meals Test Patient', 1500, 2500);
 
-            await db.recipe.create({
-                data: { name: 'Test Meal', category: 'Entrees', calories: 400 },
-            });
+      await db.recipe.create({
+        data: { name: 'Test Recipes', category: 'Entrees', calories: 400 },
+      });
 
-            const result = await getAvailableMeals(patient.id, 'lunch');
+      const result = await getAvailableRecipes(patient.id);
 
-            expect(result.recipes.length).toBeGreaterThan(0);
-        });
+      expect(result.recipes.length).toBeGreaterThan(0);
     });
+  });
 
     describe('executePrep', () => {
         describe('order detection', () => {

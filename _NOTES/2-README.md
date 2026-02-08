@@ -176,3 +176,7 @@ Noticing that a Meal should consist of One drink One Entrée, maybe a side, and 
 I have found that some types need to be cleaned up/or added. Left todos.
 
 ---
+
+Did this work kind of late and did some manual programing. I still need to write unit tests. I do see that the code should prettified. may do that next.
+
+I see where how I described the problem and how what things were named in the database might have confused the LLM. If I were to do this again. i would have changed the names of some tables.
