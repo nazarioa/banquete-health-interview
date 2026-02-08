@@ -1,5 +1,10 @@
 import { db } from '../../db';
-import { getEndOfDay, getStartOfDay } from './helpers';
+import {
+    calcAdjustedMealCalorieTarget,
+    getEndOfDay,
+    getStartOfDay,
+    mealBuilder
+} from './helpers';
 import { getAvailableRecipes as getPatientAvailableRecipes, getDietOrder } from './patientApi';
 import {
     DietOrderResponse,
@@ -135,18 +140,27 @@ export const executePrep = async (
             }
 
             // Get available meals within budget
-            const availableMeals = await getAvailableRecipes(patient.id);
+            const {recipes: availableEntrees} = await getAvailableRecipes(patient.id, 'Entrees');
+            const {recipes: availableBeverages} = await getAvailableRecipes(patient.id, 'Beverages');
+            const {recipes: availableSides} = await getAvailableRecipes(patient.id, 'Sides');
+            const {recipes: availableDesserts} = await getAvailableRecipes(patient.id, 'Desserts');
 
-            if (availableMeals.meals.length === 0) {
+            const mealCalorieTarget = calcAdjustedMealCalorieTarget(mealTime, dietOrder)
+
+            const meal = mealBuilder(mealTime, mealCalorieTarget, {
+                entrees: availableEntrees,
+                beverages: availableBeverages,
+                sides: availableSides,
+                desserts: availableDesserts
+            })
+
+            if (!meal.length) {
                 result.errors.push({
                     patientId: patient.id,
-                    error: `No recipes available within calorie budget`,
+                    error: `Could not build a meal within calorie budget`,
                 });
                 continue;
             }
-
-            // Select a single recipe that fits (first one, sorted by calories ascending)
-            const selectedRecipe = availableMeals.meals[0];
 
             // Create the tray order
             await db.trayOrder.create({
@@ -155,7 +169,7 @@ export const executePrep = async (
                     scheduledFor: serveTime,
                     mealTime: toMealTimeEnum(mealTime),
                     recipes: {
-                        create: [{ recipeId: selectedRecipe.id }],
+                        create: meal.map(r => ({recipeId: r.id})),
                     },
                 },
             });
