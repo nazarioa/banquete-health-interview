@@ -188,8 +188,11 @@ describe('AutomatedApi', () => {
             await db.recipe.deleteMany();
 
             const patient = await createPatientWithDietOrder('Association Patient', 1500, 2500);
-            const recipe = await db.recipe.create({
+            const entree = await db.recipe.create({
                data: { name: 'Association Recipe', category: 'Entrees', calories: 400 },
+            });
+            const side = await db.recipe.create({
+               data: { name: 'Side', category: 'Sides', calories: 100 },
             });
 
             await executePrep('lunch');
@@ -200,8 +203,9 @@ describe('AutomatedApi', () => {
             });
 
             expect(order).not.toBeNull();
-            expect(order?.recipes.length).toBe(1);
-            expect(order?.recipes[0].recipeId).toBe(recipe.id);
+            expect(order?.recipes.length).toBe(2);
+            expect(order?.recipes[0].recipeId).toBe(entree.id);
+            expect(order?.recipes[1].recipeId).toBe(side.id);
          });
       });
 
