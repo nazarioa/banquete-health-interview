@@ -86,3 +86,14 @@ model Admin {
 
   @@map("admins")
 }
+
+model PrepExecution {
+  id                Int      @id @default(autoincrement())
+  executedAt        DateTime @default(now()) @map("executed_at")
+  mealTime          MealTime @map("meal_time")
+  patientsProcessed Int      @map("patients_processed")
+  ordersCreated     Int      @map("orders_created")
+  errors            Json     @default("[]")
+
+  @@map("prep_executions")
+}

@@ -59,6 +59,15 @@ export type ExecutePrepResponse = {
    errors: Array<{ patientId: string; error: string }>;
 };
 
+export type PrepExecutionResponse = {
+   id: number;
+   executedAt: Date;
+   mealTime: MealTimeInput;
+   patientsProcessed: number;
+   ordersCreated: number;
+   errors: Array<{ patientId: string; error: string }>;
+};
+
 // AdminApi Input Types
 export type CreatePatientInput = {
    name: string;

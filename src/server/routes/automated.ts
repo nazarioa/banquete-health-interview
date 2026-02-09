@@ -64,4 +64,28 @@ router.post('/execute-prep/:mealTime', async (req, res) => {
    }
 });
 
+/**
+ * GET /automated/prep-executions
+ * Returns the history of prep executions
+ * Optional query params: mealTime (breakfast|lunch|dinner), limit (default 50)
+ */
+router.get('/prep-executions', async (req, res) => {
+   try {
+      const mealTime = req.query.mealTime as 'breakfast' | 'lunch' | 'dinner' | undefined;
+      const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 50;
+
+      if (mealTime && !['breakfast', 'lunch', 'dinner'].includes(mealTime)) {
+         res.status(400).json({
+            error: 'Invalid mealTime. Must be breakfast, lunch, or dinner',
+         });
+         return;
+      }
+
+      const result = await AutomatedApi.getPrepExecutions(mealTime, limit);
+      res.json(result);
+   } catch (error) {
+      res.status(500).json({ error: (error as Error).message });
+   }
+});
+
 export default router;

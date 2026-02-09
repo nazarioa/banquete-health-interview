@@ -7,6 +7,7 @@ import {
    ItemCategory,
    MealTimeHour,
    MealTimeInput,
+   PrepExecutionResponse,
    RecipeResponse,
    toMealTimeEnum,
 } from './types';
@@ -176,5 +177,39 @@ export const executePrep = async (mealTime: MealTimeHour): Promise<ExecutePrepRe
       }
    }
 
+   // Store execution results in database
+   await db.prepExecution.create({
+      data: {
+         mealTime: toMealTimeEnum(mealTime),
+         patientsProcessed: result.patientsProcessed,
+         ordersCreated: result.ordersCreated,
+         errors: result.errors,
+      },
+   });
+
    return result;
+};
+
+/**
+ * Returns the history of prep executions.
+ * Optionally filter by meal time.
+ */
+export const getPrepExecutions = async (
+   mealTime?: MealTimeHour,
+   limit: number = 50,
+): Promise<PrepExecutionResponse[]> => {
+   const executions = await db.prepExecution.findMany({
+      where: mealTime ? { mealTime: toMealTimeEnum(mealTime) } : undefined,
+      orderBy: { executedAt: 'desc' },
+      take: limit,
+   });
+
+   return executions.map((exec) => ({
+      id: exec.id,
+      executedAt: exec.executedAt,
+      mealTime: exec.mealTime.toLowerCase() as MealTimeInput,
+      patientsProcessed: exec.patientsProcessed,
+      ordersCreated: exec.ordersCreated,
+      errors: exec.errors as Array<{ patientId: string; error: string }>,
+   }));
 };
