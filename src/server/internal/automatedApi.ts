@@ -80,6 +80,27 @@ const getServeTime = (date: Date, mealTime: MealTimeHour): Date => {
 };
 
 /**
+ * Checks if a prep execution has already been processed today for the given meal time.
+ */
+export const hasProcessedMealToday = async (mealTime: MealTimeHour): Promise<boolean> => {
+   const today = new Date();
+   const startOfDay = getStartOfDay(today);
+   const endOfDay = getEndOfDay(today);
+
+   const existingExecution = await db.prepExecution.findFirst({
+      where: {
+         mealTime: toMealTimeEnum(mealTime),
+         executedAt: {
+            gte: startOfDay,
+            lte: endOfDay,
+         },
+      },
+   });
+
+   return existingExecution !== null;
+};
+
+/**
  * Cron job function that creates tray orders for patients without orders.
  * Called 4 hours before each meal serve time:
  * - breakfast: 4:00 AM (serves 8:00 AM)
@@ -97,14 +118,23 @@ const getServeTime = (date: Date, mealTime: MealTimeHour): Date => {
 export const executePrep = async (mealTime: MealTimeHour): Promise<ExecutePrepResponse> => {
    const today = new Date();
    const serveTime = getServeTime(today, mealTime);
-
-   // TODO: set systemwide status that "the meals are being prepped, and orders cannot be changed".
-
    const result: ExecutePrepResponse = {
       patientsProcessed: 0,
       ordersCreated: 0,
       errors: [],
    };
+
+   const hasProcessedToday = await hasProcessedMealToday(mealTime);
+   if (hasProcessedToday) {
+      console.log(`Already ran ordering for ${mealTime} today. No action taken.`);
+      return {
+         patientsProcessed: 0,
+         ordersCreated: 0,
+         errors: [],
+      };
+   }
+
+   // TODO: set systemwide status that "the meals are being prepped, and orders cannot be changed".
 
    // Get all patients
    const patients = await db.patient.findMany();
