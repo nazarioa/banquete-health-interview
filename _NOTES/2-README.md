@@ -186,3 +186,18 @@ I see where how I described the problem and how what things were named in the da
 Last night was a long night. I wanted to finish this before the day's festivities. I feel like I am taking too long and 
 that I am not meeting minimum expectations. Now I am just trying to conform the code to work in the configuration you expect.
 For example instead of `src/entrypoint.ts` i would have had `src/server/index.ts`
+
+---
+
+Just got back form a superbowl party. Been thinking a lot about this last little thing dealing with coming up with what 
+gets ordered. Big picture, this is like the classic algo question, given an amount like "1.85" how many different ways 
+can you make this with dollars, quarters, dimes, nickles, pennies.
+
+I want to get more infor from you on what trade-offs to make.  I even have questions about the database structure.
+
+The name "Recipie" and the data examples in the table threw me off. It seems to be that "Recipie" is more like an item 
+such as a juice box, serving of oatmeal, etc.
+
+I see now that it is more "items" that one might put on a tray from a cafeteria.
+
+This also explains why some of the code that the LLM generated seemed off. I renamed them a few commits ago.
