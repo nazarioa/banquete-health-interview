@@ -201,3 +201,19 @@ such as a juice box, serving of oatmeal, etc.
 I see now that it is more "items" that one might put on a tray from a cafeteria.
 
 This also explains why some of the code that the LLM generated seemed off. I renamed them a few commits ago.
+
+----
+
+So most today I have been working on this while also installing a water filter for my friend. 
+
+I am exhausted, I need to turn this in. There is SOO much more I feel should be done.
+
+- Tests: More of them. Code coverage is low.
+- Tests: I know that some tests are flakey because of the nature of random selection.
+- The front end...
+- Signaling to disallow patients from ordering for lunch once cutt-off time has been reached
+- See TODOS but...
+- Some data enforcement rules should go in the database schema
+- Maybe use dat-fns or similar library
+
+I am turning this in
