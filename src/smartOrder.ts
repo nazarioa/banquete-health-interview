@@ -87,7 +87,9 @@ export const triggerSmartOrderSystem = async (email: string, password: string): 
    });
 
    if (!response.ok) {
-      throw new Error(`Failed to trigger smart order system: ${response.status} ${response.statusText}`);
+      throw new Error(
+         `Failed to trigger smart order system: ${response.status} ${response.statusText}`,
+      );
    }
 
    const result = await response.json();
