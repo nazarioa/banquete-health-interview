@@ -4,6 +4,7 @@ describe('example tests', () => {
    it('tests utilize the seed data too', async () => {
       const trayOrderRecipes = await db.trayOrderRecipe.findMany();
       expect(trayOrderRecipes.length).toBe(3);
+      await db.prepExecution.deleteMany();
       await db.trayOrderRecipe.deleteMany();
       const trayOrderRecipesAfter = await db.trayOrderRecipe.findMany();
       expect(trayOrderRecipesAfter.length).toBe(0);

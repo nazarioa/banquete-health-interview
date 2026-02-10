@@ -55,6 +55,7 @@ describe('AutomatedApi', () => {
       describe('order detection', () => {
          it('skips patients who already have orders for the meal', async () => {
             // Clear all existing patients to have controlled test
+            await db.prepExecution.deleteMany();
             await db.trayOrderRecipe.deleteMany();
             await db.trayOrder.deleteMany();
             await db.patientDietOrder.deleteMany();
@@ -85,6 +86,7 @@ describe('AutomatedApi', () => {
 
          it('creates orders for patients without existing orders', async () => {
             // Clear all existing patients to have controlled test
+            await db.prepExecution.deleteMany();
             await db.trayOrderRecipe.deleteMany();
             await db.trayOrder.deleteMany();
             await db.patientDietOrder.deleteMany();
@@ -109,6 +111,7 @@ describe('AutomatedApi', () => {
 
          it('handles mix of patients with and without orders', async () => {
             // Clear all existing patients to have controlled test
+            await db.prepExecution.deleteMany();
             await db.trayOrderRecipe.deleteMany();
             await db.trayOrder.deleteMany();
             await db.patientDietOrder.deleteMany();
@@ -152,6 +155,7 @@ describe('AutomatedApi', () => {
 
       describe('recipe selection', () => {
          it('selects recipes within calorie budget', async () => {
+            await db.prepExecution.deleteMany();
             await db.trayOrderRecipe.deleteMany();
             await db.trayOrder.deleteMany();
             await db.patientDietOrder.deleteMany();
@@ -181,6 +185,7 @@ describe('AutomatedApi', () => {
          });
 
          it('creates valid TrayOrderRecipe associations', async () => {
+            await db.prepExecution.deleteMany();
             await db.trayOrderRecipe.deleteMany();
             await db.trayOrder.deleteMany();
             await db.patientDietOrder.deleteMany();
@@ -211,6 +216,7 @@ describe('AutomatedApi', () => {
 
       describe('error handling', () => {
          it('continues processing other patients if one fails', async () => {
+            await db.prepExecution.deleteMany();
             await db.trayOrderRecipe.deleteMany();
             await db.trayOrder.deleteMany();
             await db.patientDietOrder.deleteMany();
@@ -234,6 +240,7 @@ describe('AutomatedApi', () => {
          });
 
          it('reports errors in response', async () => {
+            await db.prepExecution.deleteMany();
             await db.trayOrderRecipe.deleteMany();
             await db.trayOrder.deleteMany();
             await db.patientDietOrder.deleteMany();
@@ -250,6 +257,7 @@ describe('AutomatedApi', () => {
          });
 
          it('handles patient with no diet order gracefully', async () => {
+            await db.prepExecution.deleteMany();
             await db.trayOrderRecipe.deleteMany();
             await db.trayOrder.deleteMany();
             await db.patientDietOrder.deleteMany();
@@ -267,6 +275,7 @@ describe('AutomatedApi', () => {
 
       describe('meal time handling', () => {
          it('processes breakfast correctly', async () => {
+            await db.prepExecution.deleteMany();
             await db.trayOrderRecipe.deleteMany();
             await db.trayOrder.deleteMany();
             await db.patientDietOrder.deleteMany();
@@ -289,6 +298,7 @@ describe('AutomatedApi', () => {
          });
 
          it('processes lunch correctly', async () => {
+            await db.prepExecution.deleteMany();
             await db.trayOrderRecipe.deleteMany();
             await db.trayOrder.deleteMany();
             await db.patientDietOrder.deleteMany();
@@ -311,6 +321,7 @@ describe('AutomatedApi', () => {
          });
 
          it('processes dinner correctly', async () => {
+            await db.prepExecution.deleteMany();
             await db.trayOrderRecipe.deleteMany();
             await db.trayOrder.deleteMany();
             await db.patientDietOrder.deleteMany();

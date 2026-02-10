@@ -113,6 +113,7 @@ describe('PatientApi', () => {
 
       it('returns empty array when no recipes fit budget', async () => {
          // Clear all recipes and tray order recipes to have controlled test
+         await db.prepExecution.deleteMany();
          await db.trayOrderRecipe.deleteMany();
          await db.recipe.deleteMany();
 
