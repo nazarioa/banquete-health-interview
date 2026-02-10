@@ -148,7 +148,7 @@ testing admin end-points:
 2. Login with admin
 3. Create Patient
 4. Associate Patient with DietOrders (PASS)
-<img src="/5-1.png" alt="flow tests: creating admin, authing admin, creating Patient, associating Patient with diet_orders">
+<img src="5-1.png" alt="flow tests: creating admin, authing admin, creating Patient, associating Patient with diet_orders">
 
 ---
 
