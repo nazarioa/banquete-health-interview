@@ -1,0 +1,72 @@
+# =============================================================================
+# Automated API (requires Bearer token)
+# Used by cron jobs / system automation
+# =============================================================================
+
+### Get diet order for patient
+GET {{baseUrl}}/api/automated/diet-order/{{patientId}}
+Authorization: Bearer {{token}}
+
+### Get available meals for patient - breakfast
+GET {{baseUrl}}/api/automated/available-meals/{{patientId}}/breakfast
+Authorization: Bearer {{token}}
+
+### Get available meals for patient - lunch
+GET {{baseUrl}}/api/automated/available-meals/{{patientId}}/lunch
+Authorization: Bearer {{token}}
+
+### Get available meals for patient - dinner
+GET {{baseUrl}}/api/automated/available-meals/{{patientId}}/dinner
+Authorization: Bearer {{token}}
+
+### Get available meals for patient - dinner
+GET {{baseUrl}}/api/automated/available-meals/{{patientId}}/snack
+Authorization: Bearer {{token}}
+
+# =============================================================================
+# Execute Prep (Smart Ordering System)
+# Creates tray orders for patients who haven't ordered
+# Called 4 hours before each meal serve time:
+#   - breakfast: 4:00 AM (serves 8:00 AM)
+#   - lunch: 8:00 AM (serves 12:00 PM)
+#   - dinner: 2:00 PM (serves 6:00 PM)
+# =============================================================================
+
+### Execute prep for breakfast
+POST {{baseUrl}}/api/automated/execute-prep/breakfast
+Authorization: Bearer {{token}}
+
+### Execute prep for lunch
+POST {{baseUrl}}/api/automated/execute-prep/lunch
+Authorization: Bearer {{token}}
+
+### Execute prep for dinner
+POST {{baseUrl}}/api/automated/execute-prep/dinner
+Authorization: Bearer {{token}}
+
+# =============================================================================
+# Prep Execution History
+# View past execution results
+# =============================================================================
+
+### Get all prep executions (default limit 50)
+GET {{baseUrl}}/api/automated/prep-executions
+Authorization: Bearer {{token}}
+
+### Get prep executions for breakfast only
+GET {{baseUrl}}/api/automated/prep-executions?mealTime=breakfast
+Authorization: Bearer {{token}}
+
+### Get prep executions for lunch only
+GET {{baseUrl}}/api/automated/prep-executions?mealTime=lunch
+Authorization: Bearer {{token}}
+
+### Get prep executions for dinner only
+GET {{baseUrl}}/api/automated/prep-executions?mealTime=dinner
+Authorization: Bearer {{token}}
+
+### Get last 10 prep executions
+GET {{baseUrl}}/api/automated/prep-executions?limit=10
+Authorization: Bearer {{token}}
+
+###
